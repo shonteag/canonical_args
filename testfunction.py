@@ -30,12 +30,7 @@ def test(arg1, arg2):
 	print arg1, arg2
 
 
-@arg_spec("example.json")
-def test2(arg1, arg2, arg3, kwarg1=None):
-	print arg1, arg2, arg3, kwarg1
-
-
-def test3(*args, **kwargs):
+def test2(*args, **kwargs):
 	with open("example.json") as f:
 		spec = json.load(f)
 	check_args(spec, args, kwargs)
