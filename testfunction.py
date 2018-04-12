@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 
-from canonical_args import arg_spec, check_args
-
+from canonical_args import arg_spec, check_args, register_spec
+import json
 
 
 class Obj(object):
@@ -12,7 +12,7 @@ class Obj(object):
 		"args": [
 			{
 				"name": "arg1",
-				"type": "str",
+				"type": str,
 				"values": [
 					"SAMME",
 					"SAMME.R"

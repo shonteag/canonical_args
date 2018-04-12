@@ -73,6 +73,19 @@ def check_list(names, types, values, arg):
                                                         ran[-1],
                                                         subname))
 
+        # number gt, lt, gte, lte
+        elif ((isinstance(subvalues, str) or
+               isinstance(subvalues, unicode)) and
+              (subvalues.startswith(">") or subvalues.startswith("<"))):
+
+            ts = "{}{}".format(subarg, subvalues)
+            try:
+                assert eval(ts)
+            except AssertionError, e:
+                raise AssertionError("`{}` is not {} for arg {}".format(
+                    subarg, subvalues, subname))
+
+
 def check_dict(structure_dict, kwargs):
     """
     usually used for checking kwargs
@@ -122,6 +135,20 @@ def check_dict(structure_dict, kwargs):
                                                         ran[0],
                                                         ran[-1],
                                                         kw))
+
+        # number gt, lt, gte, lte
+        elif ((isinstance(struct["values"], str) or
+               isinstance(struct["values"], unicode)) and
+              (struct["values"].startswith(">") or
+               struct["values"].startswith("<"))):
+
+            ts = "{}{}".format(arg, struct["values"])
+            try:
+                assert eval(ts)
+            except AssertionError, e:
+                raise AssertionError("`{}` is not {} for arg {}".format(
+                    arg, struct["values"], kw))
+
 
 def check_args(struct, args, kwargs):
     """

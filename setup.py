@@ -8,5 +8,8 @@ setup(name="canonical_args",
 	  author_email="shonte.amatogrill@gmail.com",
 	  maintainer="Shonte Amato-Grill",
 	  maintainer_email="shonte.amatogrill@gmail.com",
-	  packages=find_packages(exclude=["test", "tests"])
+	  packages=find_packages(exclude=["test", "tests"]),
+	  classifiers=[
+	      "Programming Language :: Python :: 2.7"
+	  ]
 )
