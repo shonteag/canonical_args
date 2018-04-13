@@ -1,10 +1,5 @@
-.. canonical_args documentation master file, created by
-   sphinx-quickstart on Thu Apr 12 11:19:59 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to canonical_args's documentation!
-==========================================
+canonical\_args
+===============
 
 canonical_args is a package designed to provide some certainty around
 abstract method calls.  Consider, for instance: ::
@@ -82,18 +77,16 @@ positional and keyword arguments match the method.  If they do not,
 ``check_args`` throws an ``AssertionError`` with further details as to
 the failing argument.
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+For more info, examples, etc, see the docs!
 
-   specs
-   example
-   registering
-   modules
 
-Indices and tables
-==================
+Installation
+------------
+Simple as: ::
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+	pip install canonical_args
+
+To run tests: ::
+
+	git clone https://github.com/shonteag/canonical_args
+	nosetests

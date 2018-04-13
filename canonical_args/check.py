@@ -27,11 +27,11 @@ def check_subtype(subname, subtype, subarg, should_cast=False):
     """
     try:
         assert isinstance(subarg, subtype) or subarg is None
-    except AssertionError, e:
+    except AssertionError as e:
         if should_cast:
             try:
                 subarg = subtype(subarg)
-            except ValueError, e:
+            except ValueError as e:
                 raise ValueError("unable to cast argument '{}' of"\
                                  "type {} to type {}".format(
                     subname, type(subarg), subtype))
@@ -61,7 +61,7 @@ def check_value_whitelist(subname, subvalues, subarg):
     if isinstance(subvalues, list):
         try:
             assert subarg in subvalues
-        except AssertionError, e:
+        except AssertionError as e:
             raise AssertionError("`{}` is not a permitted value for"\
                                  " arg '{}'. expected value from"\
                                  " {}".format(subarg, subname, subvalues))
@@ -78,7 +78,7 @@ def check_value_range(subname, subvalues, subarg):
         ran = eval(subvalues.replace("range", ""))
         try:
             assert ran[0] <= subarg and subarg <= ran[-1]
-        except AssertionError, e:
+        except AssertionError as e:
             raise AssertionError("`{}` is not in range({}, {}) for"\
                                  " arg '{}'".format(subarg,
                                                     ran[0],
@@ -96,7 +96,7 @@ def check_value_comparison(subname, subvalues, subarg):
         ts = "{}{}".format(subarg, subvalues)
         try:
             assert eval(ts)
-        except AssertionError, e:
+        except AssertionError as e:
             raise AssertionError("`{}` is not {} for arg {}".format(
                 subarg, subvalues, subname))
 

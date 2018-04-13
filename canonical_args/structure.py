@@ -19,7 +19,7 @@ def check_list(names, types, values, arg):
     # length
     try:
         assert len(types) == len(arg)
-    except AssertionError, e:
+    except AssertionError as e:
         raise AssertionError("expected {} positional arguments, only"\
                              " got {}".format(len(types), len(arg)))
 

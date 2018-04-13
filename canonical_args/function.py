@@ -9,7 +9,6 @@ import json
 import types
 
 from . import structure
-from . import registry
 
 
 
