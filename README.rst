@@ -1,83 +1,84 @@
 canonical\_args
 ===============
 
-canonical_args is a package designed to provide some certainty around
-abstract method calls.  Consider, for instance: ::
-
-	types = {
-		"thing1": submodule.handle_thing1,
-		"thing2": submodule2.handle_thing2
-	}
-
-	def message_handler(message_type, *args, **kwargs):
-		return types[message_type](*args, **kwargs)
-
-The above code implements an incredibly simple message handler. There is
-no way to know, however, if the ``args`` and ``kwargs`` passed to the
-subhandler method will be of the correct structure and/or types.  Enter
-``canonical_args``.
-
-Let's look at ``submodule.handle_thing1``. ::
-
-	def handle_thing1(arg1, arg2, kwarg1=1):
-		return float(arg1+arg2)/float(kwarg1)
-
-Quite simply, ``arg1`` and ``arg2`` must be integers or floats and
-``kwarg1`` must be greather than 0 for the method to successfully
-execute.  We can represent this as JSON: ::
+canonical_args is a package designed to provide some certainty around abstract method calls.  Consider, for instance, that we need to call one of many possible methods for a package we do not control.  Each of these methods has the same arguments, but the potential values change depending on the function.  We can write ``canonical_args`` arg specs for each of these methods, allowing us some clarity as to what each argument needs to be (types, values, etc.) when we execute dynamically: ::
 
 	{
 		"args": [
 			{
-				"name": "arg1",
-				"type": "float",
-				"values": null
+				"name": "argument1",
+				"type": int,
+				"values": "range(0, 15)"
 			},
 			{
-				"name": "arg2",
-				"type": "float",
-				"values": null
+				"name": "argument2",
+				"type": list,
+				"values": None
 			}
 		],
 		"kwargs": {
-			"kwarg1": {
-				"type": "float",
-				"values": ">0"
+			"loss_function": {
+				"type": str,
+				"value": ["quadratic", "0-1"]
 			}
 		}
 	}
 
-Assuming we can store this JSON in a file or python variable, we can
-modify the message handler like so: ::
+We can associate this spec with a method, either by registering it (if we do not control the method source): ::
+
+	from canonical_args import register_spec
+
+	# associates the spec to the method
+	register_spec(somemethod, spec)
+
+	# method instance method returns the registered spec
+	print somemethod.get_spec()
+
+or by decorating a method, if we do control it (let's say for a dynamically imported method handler sub-method). ::
+
+	from canonical_args import argspec
+
+	@arg_spec(spec, register=True)
+	def ourmethod(argument1, argument2, loss_function="quadratic"):
+		pass
+
+	print ourmethod.get_spec()
+
+This could potentially be of great use to dynamically generate frontend code with type and value-checking code.  The specs themselves could be stored in a file or database, allowing for fully dynamic method calls: ::
 
 	from canonical_args import check_args
+	import pymongo
 
-	types = {
-		"thing1": {
-			"handler": submodule.handle_thing1,
-			"argspec": submodule.handle_thing1_spec
-		}
-		"thing2": {
-			"handler": submodule2.handle_thing2,
-			"argspec": submodule2.handle_thing2_spec
-		}
-	}
+	conn = pymongo.MongoClient("localhost", 27017)
 
-	def message_handler(message_type, *args, **kwargs):
-		spec = types[message_type]["argspec"]
+	def handle(message_type, *args, **kwargs):
+		spec = conn.somedatabase.arg_specs.find_one(
+			{"message_type": message_type})
+		subhandler = conn.somedatabase.handlers.find_one(
+			{"message_type": message_type})
+
+		# use canonical_args to check the unknown arguments
+		# against the retrieved spec. will raise AssertionError
+		# if fails.
 		check_args(spec, *args, **kwargs)
 
-		return types[message_type]["handler"](*args, **kwargs)
+		# if no errors raised, fire the retrieved handler method
+		return subhandler(*args, **kwargs)
 
-This may seem unecessary, since we can always add type checking code in
-the message handling methods themselves, but what if we didn't write them,
-and do not control them (like a 3rd party python package)? The
-``check_args`` method call allows the implementer ensure the passed in
-positional and keyword arguments match the method.  If they do not,
-``check_args`` throws an ``AssertionError`` with further details as to
-the failing argument.
+	def get_handler_spec(message_type):
+		"""
+		get the arg spec without executing the function. can
+		be used at front end (eg. HTML) for generating an
+		appropriate form for method calls.
+		"""
+		return conn.somedatabase.handlers.find_one(
+			{"message_type": message_type})
 
-For more info, examples, etc, see the docs!
+The code above **does not** register the spec directly to the ``subhandler`` method, as it may not always be desirable to do so.  The choice is yours.
+
+Future Work
+-----------
+I aim to provide frontend code generation directly within the module, probably in a subpackage.  At least to handle HTML ``<form>`` generation, possibly with Javascript type matching.
 
 
 Installation
