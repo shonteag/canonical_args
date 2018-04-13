@@ -213,6 +213,23 @@ boolean flag as a keyword argument, defaulting to False.  In a spec dict:</p>
 <p class="last">We can call <code class="docutils literal notranslate"><span class="pre">anothermethod</span></code> without specifying a <code class="docutils literal notranslate"><span class="pre">percent</span></code> argument, and the default value will be checked against the spec.</p>
 </div>
 </div>
+<div class="section" id="required-vs-non-required-dictionary-keys">
+<h2>Required vs. Non-Required Dictionary Keys<a class="headerlink" href="#required-vs-non-required-dictionary-keys" title="Permalink to this headline">¶</a></h2>
+<p>By default, if a <code class="docutils literal notranslate"><span class="pre">&quot;type&quot;</span></code> is a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, all keys that appear within that dict are considered to be required.  We can turn this off by adding a key to the spec as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;kwargs&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;percent&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+                        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="kc">False</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">&quot;required&quot;:</span> <span class="pre">False</span></code> flag indicates to the <code class="docutils literal notranslate"><span class="pre">structure.check_dict</span></code> method that the key <code class="docutils literal notranslate"><span class="pre">&quot;percent&quot;</span></code> may be missing from the passed in <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p>
+</div>
 <div class="section" id="nested-types-and-values">
 <h2>Nested Types and Values<a class="headerlink" href="#nested-types-and-values" title="Permalink to this headline">¶</a></h2>
 <p>Specs allow us to nest types and values very easily.  Consider a positional argument that must be a list containing:</p>
@@ -298,6 +315,7 @@ boolean flag as a keyword argument, defaulting to False.  In a spec dict:</p>
 <li><a class="reference internal" href="#">Arg Specs</a><ul>
 <li><a class="reference internal" href="#positional-arguments">Positional Arguments</a></li>
 <li><a class="reference internal" href="#keyword-arguments">Keyword Arguments</a></li>
+<li><a class="reference internal" href="#required-vs-non-required-dictionary-keys">Required vs. Non-Required Dictionary Keys</a></li>
 <li><a class="reference internal" href="#nested-types-and-values">Nested Types and Values</a></li>
 <li><a class="reference internal" href="#objects-as-parameters">Objects as Parameters</a></li>
 </ul>
