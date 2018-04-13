@@ -6,7 +6,7 @@ description = "A module for dynamically registering, checking, and"\
 long_description = open("README.rst").read()
 
 setup(name="canonical_args",
-	  version="0.1r3",
+	  version="0.2",
 	  description=description,
 	  long_description=long_description,
 	  author="Shonte Amato-Grill",
