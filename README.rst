@@ -1,6 +1,9 @@
 canonical\_args
 ===============
 
+.. image:: https://travis-ci.org/shonteag/canonical_args.svg?branch=master
+    :target: https://travis-ci.org/shonteag/canonical_args
+
 canonical_args is a package designed to provide some certainty around abstract method calls.  Consider, for instance, that we need to call one of many possible methods for a package we do not control.  Each of these methods has the same arguments, but the potential values change depending on the function.  We can write ``canonical_args`` arg specs for each of these methods, allowing us some clarity as to what each argument needs to be (types, values, etc.) when we execute dynamically: ::
 
 	{
