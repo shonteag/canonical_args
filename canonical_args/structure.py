@@ -47,6 +47,10 @@ def check_dict(structure_dict, kwargs):
     """
     usually used for checking kwargs
     """
+    # keys may not be missing
+    missing = set(structure_dict.keys()) - set(kwargs.keys())
+    assert len(missing) == 0
+
     for subname, subarg in kwargs.items():
         # make sure the keyword argument is registered
         assert subname in structure_dict

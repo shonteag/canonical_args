@@ -166,6 +166,31 @@ And the accompanying spec dict: ::
 
 Note that ``"values"`` and ``"type"`` now take the form of lists, with an entry for each required position in the argument.
 
+``dict``'s are slightly more complicated. Essentially, we nest the arg spec for a ``dict`` in the parent's ``"type"`` entry, and let recursion do the work.  Once again, let's use an example: ::
+
+	{
+		"args": [
+			{
+				"name": "arg1",
+				"type": {
+					"dict-keyword": {
+						"type": int,
+						"values": None
+					},
+					"dict-keywork2": {
+						"type": float,
+						"values": ">=0"
+					}
+				},
+				"values": None
+			}
+		]
+	}
+
+This defines a method that takes a single argument of type ``dict``.  The ``dict`` however, in this case, **must** contain the keys ``"dict-keyword"`` (of type ``int`` with no value constraints), ``"dict-keyword2"`` (of type ``float`` and greater than or equal to 0).
+
+.. note :: We can continue to nest as many ``dict``'s, ``list``'s and ``tuple``'s as we choose.
+
 Objects as Parameters
 ---------------------
 

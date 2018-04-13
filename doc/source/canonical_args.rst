@@ -20,6 +20,14 @@ canonical\_args.structure module
     :undoc-members:
     :show-inheritance:
 
+canonical\_args.check module
+----------------------------
+
+.. automodule:: canonical_args.check
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------
