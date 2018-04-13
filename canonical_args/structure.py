@@ -47,8 +47,11 @@ def check_dict(structure_dict, kwargs):
     """
     usually used for checking kwargs
     """
+    required = [key for key, spec in structure_dict.items()\
+                    if "required" not in spec or spec["required"]]
+
     # keys may not be missing
-    missing = set(structure_dict.keys()) - set(kwargs.keys())
+    missing = set(required) - set(kwargs.keys())
     assert len(missing) == 0
 
     for subname, subarg in kwargs.items():

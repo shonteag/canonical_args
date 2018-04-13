@@ -139,6 +139,25 @@ boolean flag as a keyword argument, defaulting to False.  In a spec dict: ::
 
 .. note :: We can call ``anothermethod`` without specifying a ``percent`` argument, and the default value will be checked against the spec.
 
+
+Required vs. Non-Required Dictionary Keys
+-----------------------------------------
+By default, if a ``"type"`` is a ``dict``, all keys that appear within that dict are considered to be required.  We can turn this off by adding a key to the spec as follows: ::
+
+	{
+		"args": [],
+		"kwargs": {
+			"percent": {
+				"type": bool,
+				"values": None,
+				"required": False
+			}
+		}
+	}
+
+The ``"required": False`` flag indicates to the ``structure.check_dict`` method that the key ``"percent"`` may be missing from the passed in ``dict``.
+
+
 Nested Types and Values
 -----------------------
 

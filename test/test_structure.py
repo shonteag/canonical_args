@@ -109,6 +109,60 @@ class TestCase_CheckDict(unittest.TestCase):
 		else:
 			self.fail("should have thrown AssertionError")
 
+	def test_non_nested_non_required(self):
+		spec = {
+			"kwarg1": {
+				"type": int,
+				"values": None
+			},
+			"kwarg2": {
+				"type": float,
+				"values": None,
+				"required": False
+			}
+		}
+		kwargs = {"kwarg1": 1}  # non required kwarg missing
+
+		structure.check_dict(spec, kwargs)
+
+	def test_non_nested_required(self):
+		spec = {
+			"kwarg1": {
+				"type": int,
+				"values": None
+			},
+			"kwarg2": {
+				"type": float,
+				"values": None,
+				"required": True
+			}
+		}
+		kwargs = {"kwarg1": 1, "kwarg2": 3.3}
+
+		structure.check_dict(spec, kwargs)
+
+	def test_non_nested_required_fail(self):
+		spec = {
+			"kwarg1": {
+				"type": int,
+				"values": None
+			},
+			"kwarg2": {
+				"type": float,
+				"values": None,
+				"required": True
+			}
+		}
+		kwargs = {"kwarg1": 1}  # missing required kwarg2
+
+		try:
+			structure.check_dict(spec, kwargs)
+		except AssertionError:
+			pass
+		else:
+			self.fail("should have thrown AssertionError")
+
+
 	def test_nested_list(self):
 		spec = {
 			"kwarg1": {
