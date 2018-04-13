@@ -76,6 +76,10 @@ This could potentially be of great use to dynamically generate frontend code wit
 
 The code above **does not** register the spec directly to the ``subhandler`` method, as it may not always be desirable to do so.  The choice is yours.
 
+Full Documentation
+------------------
+https://shonteag.github.io/canonical_args/
+
 Future Work
 -----------
 I aim to provide frontend code generation directly within the module, probably in a subpackage.  At least to handle HTML ``<form>`` generation, possibly with Javascript type matching.
