@@ -1,0 +1,291 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>canonical_args package &#8212; canonical_args 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="canonical_args" href="modules.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="canonical_args"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">canonical_args</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="canonical-args-package">
+<h1>canonical_args package<a class="headerlink" href="#canonical-args-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-canonical_args.function">
+<span id="canonical-args-function-module"></span><h2>canonical_args.function module<a class="headerlink" href="#module-canonical_args.function" title="Permalink to this headline">¶</a></h2>
+<p>Provides decorators and utilities for interfacing
+<code class="docutils literal notranslate"><span class="pre">canonical_args</span></code> with python methods.</p>
+<dl class="function">
+<dt id="canonical_args.function.arg_spec">
+<code class="descclassname">canonical_args.function.</code><code class="descname">arg_spec</code><span class="sig-paren">(</span><em>spec</em>, <em>register=True</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.function.arg_spec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorates a method, and checks args against spec.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Params dict spec:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">the arg spec dict</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Params bool register:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">default <code class="docutils literal notranslate"><span class="pre">True</span></code>, registers the spec
+directly to the function variable scope. once registered,
+the spec can be retrieved with <code class="docutils literal notranslate"><span class="pre">func.get_spec()</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="canonical_args.function.get_spec">
+<code class="descclassname">canonical_args.function.</code><code class="descname">get_spec</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.function.get_spec" title="Permalink to this definition">¶</a></dt>
+<dd><p>instance method inserted dynamically into a method scope,
+allowing retrieval of the arg spec associated with the message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@arg_spec</span><span class="p">({</span><span class="o">...</span><span class="p">},</span> <span class="n">register</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">x</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">function</span><span class="o">.</span><span class="n">get_spec</span><span class="p">()</span>
+<span class="go">{...}</span>
+</pre></div>
+</div>
+<p>Can also be used directly, as in:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">function</span><span class="o">.</span><span class="n">get_spec</span><span class="p">(</span><span class="n">some</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="go">{...}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="canonical_args.function.register_spec">
+<code class="descclassname">canonical_args.function.</code><code class="descname">register_spec</code><span class="sig-paren">(</span><em>func</em>, <em>spec</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.function.register_spec" title="Permalink to this definition">¶</a></dt>
+<dd><p>add the argspec var to the function scope</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-canonical_args.structure">
+<span id="canonical-args-structure-module"></span><h2>canonical_args.structure module<a class="headerlink" href="#module-canonical_args.structure" title="Permalink to this headline">¶</a></h2>
+<p>Provides utilities for checking the structure of a list
+or dict against provided structure mandates and details.</p>
+<dl class="function">
+<dt id="canonical_args.structure.check_args">
+<code class="descclassname">canonical_args.structure.</code><code class="descname">check_args</code><span class="sig-paren">(</span><em>struct</em>, <em>args</em>, <em>kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.structure.check_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>check the arguments provided against the structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>struct</strong> (<em>dict</em>) – the dict detailing the argument structure</li>
+<li><strong>args</strong> (<em>list</em>) – the args to check against struct</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – the kwargs to check against the struct</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>AssertionError</strong> – when args or kwargs do not match struct</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="canonical_args.structure.check_dict">
+<code class="descclassname">canonical_args.structure.</code><code class="descname">check_dict</code><span class="sig-paren">(</span><em>structure_dict</em>, <em>kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.structure.check_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>usually used for checking kwargs</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="canonical_args.structure.check_list">
+<code class="descclassname">canonical_args.structure.</code><code class="descname">check_list</code><span class="sig-paren">(</span><em>names</em>, <em>types</em>, <em>values</em>, <em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.structure.check_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>recursively check a list of argument values (<code class="docutils literal notranslate"><span class="pre">arg</span></code>).
+usually used to check positional arguments passed to a
+function call.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-canonical_args.check">
+<span id="canonical-args-check-module"></span><h2>canonical_args.check module<a class="headerlink" href="#module-canonical_args.check" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="canonical_args.check.check_subtype">
+<code class="descclassname">canonical_args.check.</code><code class="descname">check_subtype</code><span class="sig-paren">(</span><em>subname</em>, <em>subtype</em>, <em>subarg</em>, <em>should_cast=False</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.check.check_subtype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="canonical_args.check.check_value">
+<code class="descclassname">canonical_args.check.</code><code class="descname">check_value</code><span class="sig-paren">(</span><em>subname</em>, <em>subvalues</em>, <em>subarg</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.check.check_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="canonical_args.check.check_value_comparison">
+<code class="descclassname">canonical_args.check.</code><code class="descname">check_value_comparison</code><span class="sig-paren">(</span><em>subname</em>, <em>subvalues</em>, <em>subarg</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.check.check_value_comparison" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="canonical_args.check.check_value_range">
+<code class="descclassname">canonical_args.check.</code><code class="descname">check_value_range</code><span class="sig-paren">(</span><em>subname</em>, <em>subvalues</em>, <em>subarg</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.check.check_value_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="canonical_args.check.check_value_whitelist">
+<code class="descclassname">canonical_args.check.</code><code class="descname">check_value_whitelist</code><span class="sig-paren">(</span><em>subname</em>, <em>subvalues</em>, <em>subarg</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.check.check_value_whitelist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="canonical_args.check.eval_subtype">
+<code class="descclassname">canonical_args.check.</code><code class="descname">eval_subtype</code><span class="sig-paren">(</span><em>subtype</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.check.eval_subtype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-canonical_args">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-canonical_args" title="Permalink to this headline">¶</a></h2>
+<p>Make top-level imports available.</p>
+<dl class="function">
+<dt id="canonical_args.check_args">
+<code class="descclassname">canonical_args.</code><code class="descname">check_args</code><span class="sig-paren">(</span><em>struct</em>, <em>args</em>, <em>kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.check_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>check the arguments provided against the structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>struct</strong> (<em>dict</em>) – the dict detailing the argument structure</li>
+<li><strong>args</strong> (<em>list</em>) – the args to check against struct</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – the kwargs to check against the struct</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>AssertionError</strong> – when args or kwargs do not match struct</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="canonical_args.arg_spec">
+<code class="descclassname">canonical_args.</code><code class="descname">arg_spec</code><span class="sig-paren">(</span><em>spec</em>, <em>register=True</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.arg_spec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorates a method, and checks args against spec.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Params dict spec:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">the arg spec dict</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Params bool register:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">default <code class="docutils literal notranslate"><span class="pre">True</span></code>, registers the spec
+directly to the function variable scope. once registered,
+the spec can be retrieved with <code class="docutils literal notranslate"><span class="pre">func.get_spec()</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="canonical_args.register_spec">
+<code class="descclassname">canonical_args.</code><code class="descname">register_spec</code><span class="sig-paren">(</span><em>func</em>, <em>spec</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.register_spec" title="Permalink to this definition">¶</a></dt>
+<dd><p>add the argspec var to the function scope</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">canonical_args package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-canonical_args.function">canonical_args.function module</a></li>
+<li><a class="reference internal" href="#module-canonical_args.structure">canonical_args.structure module</a></li>
+<li><a class="reference internal" href="#module-canonical_args.check">canonical_args.check module</a></li>
+<li><a class="reference internal" href="#module-canonical_args">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="modules.html"
+                        title="previous chapter">canonical_args</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/canonical_args.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="canonical_args"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >canonical_args</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Shonte Amato-Grill.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.2.
+    </div>
+  </body>
+</html>

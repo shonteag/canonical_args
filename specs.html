@@ -1,0 +1,359 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Arg Specs &#8212; canonical_args 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="An Example" href="example.html" />
+    <link rel="prev" title="Welcome to canonical_args’s documentation!" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="example.html" title="An Example"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to canonical_args’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="arg-specs">
+<h1>Arg Specs<a class="headerlink" href="#arg-specs" title="Permalink to this headline">¶</a></h1>
+<p>For <code class="docutils literal notranslate"><span class="pre">canonical_args</span></code> “specs” are <code class="docutils literal notranslate"><span class="pre">dict</span></code>-formatted metadata
+governing method arguments.  They provide the configurable
+functionality of the module’s <code class="docutils literal notranslate"><span class="pre">check_args</span></code> method, and associated
+method decorators.</p>
+<p>The basics of a Spec are as folows:</p>
+<ul>
+<li><p class="first">they are of type <code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
+</li>
+<li><dl class="first docutils">
+<dt>they contain at least the section <code class="docutils literal notranslate"><span class="pre">&quot;args&quot;</span></code> and may optionally</dt>
+<dd><p class="first last">contain the section <code class="docutils literal notranslate"><span class="pre">&quot;kwargs&quot;</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>each positional argument entry (<code class="docutils literal notranslate"><span class="pre">&quot;args&quot;</span></code>) contains the keys:</dt>
+<dd><p class="first last"><code class="docutils literal notranslate"><span class="pre">&quot;name&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;type&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;values&quot;</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">each keyword argument entry (<code class="docutils literal notranslate"><span class="pre">&quot;kwargs&quot;</span></code>) contains is of structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;kwarg-name&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="o">...</span><span class="p">,</span>
+                <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="o">...</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><dl class="first docutils">
+<dt>types and values may be nested to allow for lists and object-typed</dt>
+<dd><p class="first last">arguments.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="positional-arguments">
+<h2>Positional Arguments<a class="headerlink" href="#positional-arguments" title="Permalink to this headline">¶</a></h2>
+<p>To define positional arguments for a method, let’s first look at an
+example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">somemethod</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">arg3</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ensure ``arg1/arg2`` is an entry in ``arg3`` (list).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">arg1</span><span class="o">/</span><span class="n">arg2</span><span class="p">)</span> <span class="ow">in</span> <span class="n">arg3</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">somemethod</span></code> requires three positional arguments. Let’s first decide
+the requirements for each of the arguments:</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">arg1</span></code></dt>
+<dd><ul class="first last">
+<li>an integer</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">arg2</span></code></dt>
+<dd><ul class="first last">
+<li>an integer</li>
+<li>greater than 0 (to avoid <code class="docutils literal notranslate"><span class="pre">ZeroDivisionError</span></code>’s)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">arg3</span></code></dt>
+<dd><ul class="first last">
+<li>a list</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Now we model it in a <code class="docutils literal notranslate"><span class="pre">dict</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+        <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;arg1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;arg2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;0&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;arg3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">arg1</span></code> is defined as an <code class="docutils literal notranslate"><span class="pre">int</span></code>, but has no value constraint, hence <code class="docutils literal notranslate"><span class="pre">&quot;values&quot;:</span> <span class="pre">None</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">arg2</span></code> is defined as an <code class="docutils literal notranslate"><span class="pre">int</span></code>, but <em>must</em> be greater than 0, hence <code class="docutils literal notranslate"><span class="pre">&quot;values&quot;:</span> <span class="pre">&quot;&gt;0&quot;</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">arg3</span></code> is defined as a <code class="docutils literal notranslate"><span class="pre">list</span></code>, but again, has no value constraints.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">&quot;values&quot;</span></code> entry for <code class="docutils literal notranslate"><span class="pre">&quot;arg2&quot;</span></code> can take the following form:
+<code class="docutils literal notranslate"><span class="pre">&quot;&gt;{}&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;&lt;{}&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;&gt;={}&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;&lt;={}&quot;</span></code>, where <code class="docutils literal notranslate"><span class="pre">&quot;{}&quot;</span></code> is replaced
+by an integer or float.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>To add value and structure constraints to a list argument, we would do the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;list_arg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list([int, float, str])&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;range(0, 15)&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;&gt;=50&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">]</span>
+        <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">list_arg</span></code> must be a list of length 3, with positon 0 as an integer between 0 and 14, position 1 as a float greater than or equal to 50, and position 2 a string equal to <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;C&quot;</span></code>.</p>
+</div>
+</div>
+<div class="section" id="keyword-arguments">
+<h2>Keyword Arguments<a class="headerlink" href="#keyword-arguments" title="Permalink to this headline">¶</a></h2>
+<p>Keyword arguments have no guaranteed position, and are not required input to a method.  Let’s look at another example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">anothermethod</span><span class="p">(</span><span class="n">complete</span><span class="p">,</span> <span class="n">total</span><span class="p">,</span> <span class="n">percent</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        calculate completion, if percent flag is True,</span>
+<span class="sd">        return answer as a percent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">percentage</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">complete</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">percent</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">percentage</span> <span class="o">*</span> <span class="mf">100.0</span>
+        <span class="k">return</span> <span class="n">percentage</span>
+</pre></div>
+</div>
+<p>The above function takes two floats as positional arguments (above), and one
+boolean flag as a keyword argument, defaulting to False.  In a spec dict:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;complete&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;float&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="kc">None</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;total&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;float&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="kc">None</span>
+                <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;kwargs&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;percent&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="kc">None</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">complete</span></code> is a float with no value constraints.</p>
+<p><code class="docutils literal notranslate"><span class="pre">total</span></code> is a float with no value constraints.</p>
+<p><code class="docutils literal notranslate"><span class="pre">percent</span></code> is a keyword argument of type <code class="docutils literal notranslate"><span class="pre">bool</span></code> with no value constraints.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We can call <code class="docutils literal notranslate"><span class="pre">anothermethod</span></code> without specifying a <code class="docutils literal notranslate"><span class="pre">percent</span></code> argument, and the default value will be checked against the spec.</p>
+</div>
+</div>
+<div class="section" id="nested-types-and-values">
+<h2>Nested Types and Values<a class="headerlink" href="#nested-types-and-values" title="Permalink to this headline">¶</a></h2>
+<p>Specs allow us to nest types and values very easily.  Consider a positional argument that must be a list containing:</p>
+<ul class="simple">
+<li>an integer greater than or equal to 0</li>
+<li>an integer between -10 and 10</li>
+<li>and a string equal to “A” or “B”</li>
+</ul>
+<p>And the accompanying spec dict:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;arg1&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+                        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span>
+                                <span class="s2">&quot;&gt;=0&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;range(-10, 10)&quot;</span>
+                                <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]</span>
+                        <span class="p">]</span>
+                <span class="p">}</span>
+        <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">&quot;values&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;type&quot;</span></code> now take the form of lists, with an entry for each required position in the argument.</p>
+<p><code class="docutils literal notranslate"><span class="pre">dict</span></code>’s are slightly more complicated. Essentially, we nest the arg spec for a <code class="docutils literal notranslate"><span class="pre">dict</span></code> in the parent’s <code class="docutils literal notranslate"><span class="pre">&quot;type&quot;</span></code> entry, and let recursion do the work.  Once again, let’s use an example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;arg1&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s2">&quot;dict-keyword&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                                        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="kc">None</span>
+                                <span class="p">},</span>
+                                <span class="s2">&quot;dict-keywork2&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                                        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;=0&quot;</span>
+                                <span class="p">}</span>
+                        <span class="p">},</span>
+                        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="kc">None</span>
+                <span class="p">}</span>
+        <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This defines a method that takes a single argument of type <code class="docutils literal notranslate"><span class="pre">dict</span></code>.  The <code class="docutils literal notranslate"><span class="pre">dict</span></code> however, in this case, <strong>must</strong> contain the keys <code class="docutils literal notranslate"><span class="pre">&quot;dict-keyword&quot;</span></code> (of type <code class="docutils literal notranslate"><span class="pre">int</span></code> with no value constraints), <code class="docutils literal notranslate"><span class="pre">&quot;dict-keyword2&quot;</span></code> (of type <code class="docutils literal notranslate"><span class="pre">float</span></code> and greater than or equal to 0).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We can continue to nest as many <code class="docutils literal notranslate"><span class="pre">dict</span></code>’s, <code class="docutils literal notranslate"><span class="pre">list</span></code>’s and <code class="docutils literal notranslate"><span class="pre">tuple</span></code>’s as we choose.</p>
+</div>
+</div>
+<div class="section" id="objects-as-parameters">
+<h2>Objects as Parameters<a class="headerlink" href="#objects-as-parameters" title="Permalink to this headline">¶</a></h2>
+<p>It is often necessary to pass instantiated objects as parameters to methods.  This can also be handled by <code class="docutils literal notranslate"><span class="pre">canonical_args</span></code>.  Let’s assume we have a class located at <code class="docutils literal notranslate"><span class="pre">a_package.a_module.SomeClass</span></code>.  To require a parameter to either instance <strong>or subinstance</strong> this class, we do the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;object_argument&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;a_package.a_module.SomeClass&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="kc">None</span>
+                <span class="p">}</span>
+        <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">canonical_args</span></code> will now ensure the parameter passed for <code class="docutils literal notranslate"><span class="pre">&quot;object_parameter&quot;</span></code> is of type <code class="docutils literal notranslate"><span class="pre">&quot;a_package.a_module.SomeClass&quot;</span></code>, and will even import <code class="docutils literal notranslate"><span class="pre">SomeClass</span></code> from <code class="docutils literal notranslate"><span class="pre">a_package.a_module</span></code> automatically.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Ensure that any object path is to trusted code, or the import process can open a potential security vulnerability!!</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Arg Specs</a><ul>
+<li><a class="reference internal" href="#positional-arguments">Positional Arguments</a></li>
+<li><a class="reference internal" href="#keyword-arguments">Keyword Arguments</a></li>
+<li><a class="reference internal" href="#nested-types-and-values">Nested Types and Values</a></li>
+<li><a class="reference internal" href="#objects-as-parameters">Objects as Parameters</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to canonical_args’s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="example.html"
+                        title="next chapter">An Example</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/specs.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="example.html" title="An Example"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to canonical_args’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Shonte Amato-Grill.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.2.
+    </div>
+  </body>
+</html>
