@@ -1,6 +1,6 @@
 import unittest
 
-from canonical_args import strucutre
+from canonical_args import structure
 
 
 
