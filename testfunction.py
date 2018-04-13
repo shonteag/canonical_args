@@ -30,7 +30,50 @@ def test(arg1, arg2):
 	print arg1, arg2
 
 
-def test2(*args, **kwargs):
+@arg_spec(
+	{
+		"args": [
+			{
+				"name": "arg1",
+				"type": int,
+				"values": ">0"
+			},
+			{
+				"name": "arg2",
+				"type": dict({
+					"arg2.1": {
+						"type": int,
+						"values": None
+					},
+					"arg2.2": {
+						"type": float,
+						"values": ">=0"
+					}
+				}),
+				"values": None
+			}
+		],
+		"kwargs": {
+			"kwarg1": {
+				"type": dict({
+					"thing1": {
+						"type": int,
+						"values": None
+					},
+					"thing2": {
+						"type": int,
+						"values": None
+					}
+				}),
+				"values": None
+			}
+		}
+	}
+)
+def test2(arg1, arg2, kwarg1=None):
+	print arg1, arg2, kwarg1
+
+def test3(*args, **kwargs):
 	with open("example.json") as f:
 		spec = json.load(f)
 	check_args(spec, args, kwargs)

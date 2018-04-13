@@ -18,7 +18,12 @@ GET_SPEC_FUNC = "get_spec"
 
 def arg_spec(spec, register=True):
     """
-    method decorator for checking an argspec.
+    Decorates a method, and checks args against spec.
+
+    :params dict spec: the arg spec dict
+    :params bool register: default ``True``, registers the spec
+        directly to the function variable scope. once registered,
+        the spec can be retrieved with ``func.get_spec()``.
     """
     def inner(func):
         # register the spec to the function,
@@ -34,7 +39,6 @@ def arg_spec(spec, register=True):
         return _inner
     return inner
 
-
 def register_spec(func, spec):
     """
     add the argspec var to the function scope
@@ -43,6 +47,23 @@ def register_spec(func, spec):
     setattr(func, GET_SPEC_FUNC, types.MethodType(get_spec, func, type(func)))
 
 def get_spec(func):
+    """
+    instance method inserted dynamically into a method scope,
+    allowing retrieval of the arg spec associated with the message: ::
+
+        >>> @arg_spec({...}, register=True)
+        ... def f(x):
+        ...     return x
+        ...
+        >>> function.get_spec()
+        {...}
+
+    Can also be used directly, as in: ::
+
+        >>> function.get_spec(some.function.name)
+        {...}
+
+    """
     if not hasattr(func, FUNC_SPEC_VAR):
         raise AttributeError("{} does not have a registered spec."\
                              " Consider using the ``register=True``"\
