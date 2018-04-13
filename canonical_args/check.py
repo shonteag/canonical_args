@@ -5,6 +5,17 @@ from __future__ import absolute_import
 
 
 
+def dynamic_import(class_string):
+    """
+    perform a dynamic import of a class or function (callable).
+    """
+    package_name = class_string.split(".")[0]
+
+    mod = __import__(package_name)
+    for comp in class_string.split(".")[1:]:
+        mod = getattr(mod, comp)
+    return mod
+
 def eval_subtype(subtype):
     """
 
@@ -14,10 +25,7 @@ def eval_subtype(subtype):
             subtype = eval(subtype)
         except NameError:
             # THIS IS A CLASS, not a type!!!!!!
-            # do the imports
-            impo = ".".join(s for s in subtype.split(".")[:-1])
-            exec("import {}".format(impo))
-            subtype = eval(subtype)
+            subtype = dynamic_import(subtype)
 
     return subtype
 
