@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>canonical_args package &#8212; canonical_args 0.2 documentation</title>
+    <title>canonical_args package &#8212; canonical_args 0.3 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="_static/documentation_options.js"></script>
@@ -29,7 +29,7 @@
         <li class="right" >
           <a href="modules.html" title="canonical_args"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">canonical_args</a> &#187;</li> 
       </ul>
     </div>  
@@ -138,6 +138,12 @@ function call.</p>
 </div>
 <div class="section" id="module-canonical_args.check">
 <span id="canonical-args-check-module"></span><h2>canonical_args.check module<a class="headerlink" href="#module-canonical_args.check" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="canonical_args.check.ChoiceOfOne">
+<em class="property">class </em><code class="descclassname">canonical_args.check.</code><code class="descname">ChoiceOfOne</code><a class="headerlink" href="#canonical_args.check.ChoiceOfOne" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
+</dd></dl>
+
 <dl class="function">
 <dt id="canonical_args.check.check_subtype">
 <code class="descclassname">canonical_args.check.</code><code class="descname">check_subtype</code><span class="sig-paren">(</span><em>subname</em>, <em>subtype</em>, <em>subarg</em>, <em>should_cast=False</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.check.check_subtype" title="Permalink to this definition">¶</a></dt>
@@ -145,7 +151,7 @@ function call.</p>
 
 <dl class="function">
 <dt id="canonical_args.check.check_value">
-<code class="descclassname">canonical_args.check.</code><code class="descname">check_value</code><span class="sig-paren">(</span><em>subname</em>, <em>subvalues</em>, <em>subarg</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.check.check_value" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">canonical_args.check.</code><code class="descname">check_value</code><span class="sig-paren">(</span><em>subname</em>, <em>subtypes</em>, <em>subvalues</em>, <em>subarg</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.check.check_value" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -172,7 +178,39 @@ function call.</p>
 <dl class="function">
 <dt id="canonical_args.check.eval_subtype">
 <code class="descclassname">canonical_args.check.</code><code class="descname">eval_subtype</code><span class="sig-paren">(</span><em>subtype</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.check.eval_subtype" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>get the subtype from a subtype string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>subtype</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">unicode</span></code>) – the string version of the type</td>
+</tr>
+</tbody>
+</table>
+<p>Acceptable values:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="85%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Format</th>
+<th class="head">Use</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>“int”</td>
+<td>native types: str, float, int, bool, dict, list, etc.</td>
+</tr>
+<tr class="row-odd"><td>“one([])”</td>
+<td>choice of one, can nest ‘cls’ calls here</td>
+</tr>
+<tr class="row-even"><td>“cls(‘’)”</td>
+<td>a class import string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 <div class="section" id="module-canonical_args">
@@ -285,7 +323,7 @@ the spec can be retrieved with <code class="docutils literal notranslate"><span 
         <li class="right" >
           <a href="modules.html" title="canonical_args"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >canonical_args</a> &#187;</li> 
       </ul>
     </div>

@@ -1,0 +1,243 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Syntax Cheat Sheet &#8212; canonical_args 0.3 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="An Example" href="example.html" />
+    <link rel="prev" title="Arg Specs" href="specs.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="example.html" title="An Example"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="specs.html" title="Arg Specs"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.3 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="syntax-cheat-sheet">
+<h1>Syntax Cheat Sheet<a class="headerlink" href="#syntax-cheat-sheet" title="Permalink to this headline">¶</a></h1>
+<p>The syntax can be challenging at first, but once you master it, it’s pretty powerful. We’ll give the bellow cheat sheet, and some examples too!</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;arg1&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">TYPE_REF</span><span class="p">,</span>
+                        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">VALUE_REF</span>
+                <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;kwargs&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;kwarg1&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">TYPE_REF</span><span class="p">,</span>
+                        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">VALUE_REF</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Let’s take a look at the keys step-by-step.</p>
+<div class="section" id="type-ref">
+<h2>TYPE_REF<a class="headerlink" href="#type-ref" title="Permalink to this headline">¶</a></h2>
+<p>Type refs are formatted strings or types in python.  Here’s the potential values, and what they do:</p>
+<p><strong>Native type</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;int&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+<p>This is a native type. This works for all non-nested native types.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">VALUE_REF</span> <span class="k">for</span> <span class="nb">int</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Native type, iterable, unstructured</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;list&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">list</span></code></p>
+<p>This is a list native type. It has no required structure.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">null</span>   <span class="c1"># we cannot assign a value to an unstructured type</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Native type, iterable, structured</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;list([int,</span> <span class="pre">str])&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">list([int,</span> <span class="pre">str])</span></code> or <code class="docutils literal notranslate"><span class="pre">[int,</span> <span class="pre">str]</span></code></p>
+<p>This is a list native type. It requires one integer, and one string, in that order.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list([int, str])&quot;</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="n">VALUE_REF</span> <span class="k">for</span> <span class="n">position</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">int</span>
+                <span class="n">VALUE_REF</span> <span class="k">for</span> <span class="n">position</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">str</span>
+        <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Native type, keyed, unstructured</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;dict&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>This is a dict native type. It has no required structure or keys.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;dict&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">null</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Native type, keyed, structured</strong>: <code class="docutils literal notranslate"><span class="pre">{&quot;a&quot;:</span> <span class="pre">{&quot;type&quot;:</span> <span class="pre">int,</span> <span class="pre">&quot;values&quot;:</span> <span class="pre">None}</span></code></p>
+<p>This is a nested dict type. It indicates that the arg must be of type dict, and must contain the key <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code> corresponding to an integer value.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;subkey1&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">TYPE_REF</span> <span class="k">for</span> <span class="n">key</span> <span class="n">subkey1</span><span class="p">,</span>
+                        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">VALUE_REF</span> <span class="k">for</span> <span class="n">key</span> <span class="n">subkey1</span><span class="p">,</span>
+                        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="n">true</span> <span class="p">(</span><span class="n">default</span><span class="p">)</span><span class="o">/</span><span class="n">false</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">null</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Native type, choice</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;one([int,</span> <span class="pre">float])&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">canonical_args.check.ChoiceOfOne([int,</span> <span class="pre">float])</span></code></p>
+<p>This is a “ChoiceOfOne” type. It indicates the arg can be one of either <code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">float</span></code> types.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;one([int, float])&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="n">VALUE_REF</span> <span class="k">for</span> <span class="n">arg</span> <span class="k">if</span> <span class="n">arg</span> <span class="ow">is</span> <span class="nb">int</span><span class="p">,</span>
+                <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="n">VALUE_REF</span> <span class="k">for</span> <span class="n">arg</span> <span class="k">if</span> <span class="n">arg</span> <span class="ow">is</span> <span class="nb">float</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">&quot;values&quot;</span></code> key is of type <code class="docutils literal notranslate"><span class="pre">dict</span></code>, and contains an entry for each possible type in the <code class="docutils literal notranslate"><span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;one([int,</span> <span class="pre">float])&quot;</span></code> type ref.</p>
+</div>
+<p><strong>Class type</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;cls('import.string.to.ClassObject')&quot;</span></code></p>
+<p>This is a Class type. It indicates that the argument will instance or subinstance the class located at <code class="docutils literal notranslate"><span class="pre">'import.string.to.ClassObject'</span></code>.  Imports will be made automatically.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;cls(&#39;mymodule.MyClass&#39;)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">null</span>  <span class="c1"># cannot value check objects at this time</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="value-ref">
+<h2>VALUE_REF<a class="headerlink" href="#value-ref" title="Permalink to this headline">¶</a></h2>
+<p>Value refs are <code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">list</span></code> or <code class="docutils literal notranslate"><span class="pre">dict</span></code> in type, and detail the permissable values for the argument to which they correspond.</p>
+<p><strong>Comparison</strong>:  <code class="docutils literal notranslate"><span class="pre">&quot;&gt;{}&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;&lt;{}&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;={}</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;={}</span></code></p>
+<p>This value ref compares a number to the number replacing the <code class="docutils literal notranslate"><span class="pre">&quot;{}&quot;</span></code>. Obviously enough, only use these for TYPE_REF <code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">int</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;0&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Range</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;range({},</span> <span class="pre">{})&quot;</span></code></p>
+<p>This value ref ensures a numerical argument input falls between two numbers. <strong>Note</strong> that the range is inclusive, as in <code class="docutils literal notranslate"><span class="pre">{}&lt;=arg&lt;={}</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;float&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;range(-5.5, 10.6)&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Preset list</strong>: <code class="docutils literal notranslate"><span class="pre">[&quot;SAMME&quot;,</span> <span class="pre">&quot;SAMME.R&quot;]</span></code></p>
+<p>Ensure a argument input is in this list.  Good for control arguments, asking for algorithm names, for example.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For details on nesting Type refs and value refs, see <a class="reference internal" href="specs.html"><span class="doc">Arg Specs</span></a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Syntax Cheat Sheet</a><ul>
+<li><a class="reference internal" href="#type-ref">TYPE_REF</a></li>
+<li><a class="reference internal" href="#value-ref">VALUE_REF</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="specs.html"
+                        title="previous chapter">Arg Specs</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="example.html"
+                        title="next chapter">An Example</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/cheatsheet.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="example.html" title="An Example"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="specs.html" title="Arg Specs"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.3 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Shonte Amato-Grill.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.2.
+    </div>
+  </body>
+</html>

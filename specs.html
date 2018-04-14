@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Arg Specs &#8212; canonical_args 0.2 documentation</title>
+    <title>Arg Specs &#8212; canonical_args 0.3 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="_static/documentation_options.js"></script>
@@ -15,7 +15,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="An Example" href="example.html" />
+    <link rel="next" title="Syntax Cheat Sheet" href="cheatsheet.html" />
     <link rel="prev" title="Welcome to canonical_args’s documentation!" href="index.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,12 +28,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="example.html" title="An Example"
+          <a href="cheatsheet.html" title="Syntax Cheat Sheet"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Welcome to canonical_args’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.3 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -68,7 +68,8 @@ method decorators.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
         <span class="s2">&quot;kwarg-name&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="o">...</span><span class="p">,</span>
-                <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="o">...</span>
+                <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="o">...</span><span class="p">,</span>
+                <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="o">...</span>
         <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -98,7 +99,7 @@ the requirements for each of the arguments:</p>
 <li><dl class="first docutils">
 <dt><code class="docutils literal notranslate"><span class="pre">arg1</span></code></dt>
 <dd><ul class="first last">
-<li>an integer</li>
+<li>an integer or float</li>
 </ul>
 </dd>
 </dl>
@@ -106,7 +107,7 @@ the requirements for each of the arguments:</p>
 <li><dl class="first docutils">
 <dt><code class="docutils literal notranslate"><span class="pre">arg2</span></code></dt>
 <dd><ul class="first last">
-<li>an integer</li>
+<li>an integer or float</li>
 <li>greater than 0 (to avoid <code class="docutils literal notranslate"><span class="pre">ZeroDivisionError</span></code>’s)</li>
 </ul>
 </dd>
@@ -125,13 +126,19 @@ the requirements for each of the arguments:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
         <span class="p">{</span>
                 <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;arg1&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="kc">None</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;one([int, float])&quot;</span>
+                <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="kc">None</span>
+                <span class="p">}</span>
         <span class="p">},</span>
         <span class="p">{</span>
                 <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;arg2&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;0&quot;</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;one([int, float])&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;0&quot;</span>
+                <span class="p">}</span>
         <span class="p">},</span>
         <span class="p">{</span>
                 <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;arg3&quot;</span><span class="p">,</span>
@@ -141,8 +148,8 @@ the requirements for each of the arguments:</p>
 <span class="p">]</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">arg1</span></code> is defined as an <code class="docutils literal notranslate"><span class="pre">int</span></code>, but has no value constraint, hence <code class="docutils literal notranslate"><span class="pre">&quot;values&quot;:</span> <span class="pre">None</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">arg2</span></code> is defined as an <code class="docutils literal notranslate"><span class="pre">int</span></code>, but <em>must</em> be greater than 0, hence <code class="docutils literal notranslate"><span class="pre">&quot;values&quot;:</span> <span class="pre">&quot;&gt;0&quot;</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">arg1</span></code> is defined as an <code class="docutils literal notranslate"><span class="pre">int</span></code> of <code class="docutils literal notranslate"><span class="pre">float</span></code>, but has no value constraint, hence <code class="docutils literal notranslate"><span class="pre">&quot;values&quot;:</span> <span class="pre">None</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">arg2</span></code> is defined as an <code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">float</span></code>, but <em>must</em> be greater than 0, hence <code class="docutils literal notranslate"><span class="pre">&quot;values&quot;:</span> <span class="pre">{&quot;int&quot;:</span> <span class="pre">&quot;&gt;0&quot;,</span> <span class="pre">&quot;float&quot;:</span> <span class="pre">&quot;&gt;0&quot;}</span></code>.  For choice of one type refs, the “values” key always contains an entry for each possible type.</p>
 <p><code class="docutils literal notranslate"><span class="pre">arg3</span></code> is defined as a <code class="docutils literal notranslate"><span class="pre">list</span></code>, but again, has no value constraints.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -326,8 +333,8 @@ boolean flag as a keyword argument, defaulting to False.  In a spec dict:</p>
   <p class="topless"><a href="index.html"
                         title="previous chapter">Welcome to canonical_args’s documentation!</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="example.html"
-                        title="next chapter">An Example</a></p>
+  <p class="topless"><a href="cheatsheet.html"
+                        title="next chapter">Syntax Cheat Sheet</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -361,12 +368,12 @@ boolean flag as a keyword argument, defaulting to False.  In a spec dict:</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="example.html" title="An Example"
+          <a href="cheatsheet.html" title="Syntax Cheat Sheet"
              >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Welcome to canonical_args’s documentation!"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.3 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

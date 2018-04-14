@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Welcome to canonical_args’s documentation! &#8212; canonical_args 0.2 documentation</title>
+    <title>Welcome to canonical_args’s documentation! &#8212; canonical_args 0.3 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="_static/documentation_options.js"></script>
@@ -29,7 +29,7 @@
         <li class="right" >
           <a href="specs.html" title="Arg Specs"
              accesskey="N">next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">canonical_args 0.2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">canonical_args 0.3 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -50,8 +50,12 @@
                 <span class="p">},</span>
                 <span class="p">{</span>
                         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;argument2&quot;</span><span class="p">,</span>
-                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-                        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="kc">None</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;one([int, float, str])&quot;</span>
+                        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;str&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">]</span>
+                        <span class="p">}</span>
                 <span class="p">}</span>
         <span class="p">],</span>
         <span class="s2">&quot;kwargs&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -123,6 +127,11 @@
 <li class="toctree-l2"><a class="reference internal" href="specs.html#required-vs-non-required-dictionary-keys">Required vs. Non-Required Dictionary Keys</a></li>
 <li class="toctree-l2"><a class="reference internal" href="specs.html#nested-types-and-values">Nested Types and Values</a></li>
 <li class="toctree-l2"><a class="reference internal" href="specs.html#objects-as-parameters">Objects as Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Syntax Cheat Sheet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cheatsheet.html#type-ref">TYPE_REF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheatsheet.html#value-ref">VALUE_REF</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">An Example</a></li>
@@ -197,7 +206,7 @@
         <li class="right" >
           <a href="specs.html" title="Arg Specs"
              >next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">canonical_args 0.2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">canonical_args 0.3 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
