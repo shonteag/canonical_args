@@ -17,8 +17,12 @@ canonical_args is a package designed to provide some certainty around abstract m
 			},
 			{
 				"name": "argument2",
-				"type": list,
-				"values": None
+				"type": "one([int, float, str])"
+				"values": {
+					"int": ">0",
+					"float": ">0",
+					"str": ["A", "B", "C"]
+				}
 			}
 		],
 		"kwargs": {
@@ -86,6 +90,7 @@ The code above **does not** register the spec directly to the ``subhandler`` met
    :caption: Contents:
 
    specs
+   cheatsheet
    example
    registering
    modules

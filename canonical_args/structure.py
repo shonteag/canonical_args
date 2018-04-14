@@ -27,9 +27,10 @@ def check_list(names, types, values, arg):
 
         subtype = check.eval_subtype(subtype)
         
-        # recurse if list or tuple
-        if (isinstance(subtype, list) or
-            isinstance(subtype, tuple)):
+        # recurse if list or tuple, but not if choice of one
+        if ((isinstance(subtype, list) or
+             isinstance(subtype, tuple)) and
+            not isinstance(subtype, check.ChoiceOfOne)):
             subname = ["{}#{}".format(subname, i) \
                        for i in range(0, len(subtype))]
             check_list(subname, subtype, subvalues, subarg)
@@ -40,7 +41,7 @@ def check_list(names, types, values, arg):
             continue
 
         subarg = check.check_subtype(subname, subtype, subarg)
-        check.check_value(subname, subvalues, subarg)
+        check.check_value(subname, subtype, subvalues, subarg)
 
 
 def check_dict(structure_dict, kwargs):
@@ -61,7 +62,9 @@ def check_dict(structure_dict, kwargs):
 
         subtype = check.eval_subtype(struct["type"])
 
-        if isinstance(subtype, list) or isinstance(subtype, tuple):
+        if ((isinstance(subtype, list) or
+             isinstance(subtype, tuple)) and
+            not isinstance(subtype, check.ChoiceOfOne)):
             subname = ["{}#{}".format(subname, i) for i in range(0, len(subtype))]
             check_list(subname, subtype, struct["values"], subarg)
             continue
@@ -71,7 +74,7 @@ def check_dict(structure_dict, kwargs):
             continue
 
         subarg = check.check_subtype(subname, subtype, subarg)
-        check.check_value(subname, struct["values"], subarg)
+        check.check_value(subname, subtype, struct["values"], subarg)
 
 
 def check_args(struct, args, kwargs):

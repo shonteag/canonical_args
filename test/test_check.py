@@ -3,6 +3,7 @@ import unittest
 from canonical_args import check
 
 
+
 class TestObj(object):
 	pass
 
@@ -21,6 +22,15 @@ class TestCase_EvalSubtype(unittest.TestCase):
 
 	def test_type_object(self):
 		self.assertEqual(check.eval_subtype("test_check.TestObj"), TestObj)
+
+	def test_type_choice(self):
+		self.assertEqual(check.eval_subtype("one([int, float])"),
+						 check.ChoiceOfOne([int, float]))
+
+	def test_choice_of_one_with_object(self):
+		self.assertEqual(
+			check.eval_subtype("one([int, cls('test_check.TestObj')])"),
+			check.ChoiceOfOne([int, TestObj]))
 
 
 class TestCase_CheckSubtype(unittest.TestCase):
@@ -55,6 +65,30 @@ class TestCase_CheckSubtype(unittest.TestCase):
 			pass
 		else:
 			self.fail("should have thrown ValueError")
+
+	def test_type_choice_of_one(self):
+		self.assertEqual(check.check_subtype("testArg",
+											 check.ChoiceOfOne([int, float]),
+											 58.1),
+						 58.1)
+
+	def test_type_choice_of_one_object(self):
+		obj = TestObj()
+		self.assertEqual(check.check_subtype("testArg",
+											 check.ChoiceOfOne([int,
+											 					TestObj]),
+											 obj),
+						 obj)
+
+	def test_type_choice_of_one_fail(self):
+		try:
+			check.check_subtype("testArg",
+								check.ChoiceOfOne([int, float]),
+								"string")
+		except AssertionError:
+			pass
+		else:
+			self.fail("should have thrown AssertionError")
 
 
 class TestCase_CheckValueWhitelist(unittest.TestCase):
@@ -173,5 +207,45 @@ class TestCase_CheckValueComparison(unittest.TestCase):
 		else:
 			self.fail("should have thrown AssertionError")
 
+
+class TestCase_CheckValue(unittest.TestCase):
+
+	def test_check_value_choice_of_one(self):
+		subname = "testArg"
+		subtypes = check.ChoiceOfOne([int, float])
+		subvalues = {
+			"int": ">0",
+			"float": "<0"
+		}
+		subarg = 1
+
+		check.check_value(subname, subtypes, subvalues, subarg)
+
+	def test_check_value_choice_of_one_fail(self):
+		subname = "testArg"
+		subtypes = check.ChoiceOfOne([int, float])
+		subvalues = {
+			"int": ">0",
+			"float": "<0"
+		}
+		subarg = 50.3  # is float, but >0
+
+		try:
+			check.check_value(subname, subtypes, subvalues, subarg)
+		except AssertionError:
+			pass
+		else:
+			self.fail("should have thrown AssertionError")
+
+	def test_check_value_choice_of_one_with_object(self):
+		subname = "testArg"
+		subtypes = check.ChoiceOfOne([int, TestObj])
+		subvalues = {
+			"int": ">0",
+			"test_check.TestObj": None
+		}
+		subarg = TestObj()
+
+		check.check_value(subname, subtypes, subvalues, subarg)
 
 

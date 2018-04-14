@@ -18,7 +18,8 @@ The basics of a Spec are as folows:
 	{
 		"kwarg-name": {
 			"type": ...,
-			"values": ...
+			"values": ...,
+			"required": ...
 		}
 	}
 
@@ -41,9 +42,9 @@ example: ::
 the requirements for each of the arguments:
 
 - ``arg1``
-	- an integer
+	- an integer or float
 - ``arg2``
-	- an integer
+	- an integer or float
 	- greater than 0 (to avoid ``ZeroDivisionError``'s)
 - ``arg3``
 	- a list
@@ -53,13 +54,19 @@ Now we model it in a ``dict``: ::
 	[
 		{
 			"name": "arg1",
-			"type": int,
-			"values": None
+			"type": "one([int, float])"
+			"values": {
+				"int": None,
+				"float": None
+			}
 		},
 		{
 			"name": "arg2",
-			"type": int,
-			"values": ">0"
+			"type": "one([int, float])",
+			"values": {
+				"int": ">0",
+				"float": ">0"
+			}
 		},
 		{
 			"name": "arg3",
@@ -68,9 +75,9 @@ Now we model it in a ``dict``: ::
 		}
 	]
 
-``arg1`` is defined as an ``int``, but has no value constraint, hence ``"values": None``.
+``arg1`` is defined as an ``int`` of ``float``, but has no value constraint, hence ``"values": None``.
 
-``arg2`` is defined as an ``int``, but *must* be greater than 0, hence ``"values": ">0"``.
+``arg2`` is defined as an ``int`` or ``float``, but *must* be greater than 0, hence ``"values": {"int": ">0", "float": ">0"}``.  For choice of one type refs, the "values" key always contains an entry for each possible type.
 
 ``arg3`` is defined as a ``list``, but again, has no value constraints.
 
