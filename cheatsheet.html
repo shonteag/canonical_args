@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Syntax Cheat Sheet &#8212; canonical_args 0.3 documentation</title>
+    <title>Syntax Cheat Sheet &#8212; canonical_args 0.3.1 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="_static/documentation_options.js"></script>
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="specs.html" title="Arg Specs"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.3 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.3.1 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -73,6 +73,29 @@
         <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">VALUE_REF</span> <span class="k">for</span> <span class="nb">int</span>
 <span class="p">}</span>
 </pre></div>
+</div>
+<p><strong>NoneType</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;NoneType&quot;</span></code></p>
+<p>This is a native type of <code class="docutils literal notranslate"><span class="pre">None</span></code>, or <code class="docutils literal notranslate"><span class="pre">type(None)</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;NoneType&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">null</span>  <span class="c1"># always null for NoneType</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>This may seem useless, as an argument that has to be None cannot pass any usable input, but this is not the case when nested.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;one([int, float, NoneType])&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="n">VALUE_REF</span> <span class="k">for</span> <span class="nb">int</span><span class="p">,</span>
+                <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="n">VALUE_REF</span> <span class="k">for</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;NoneType&quot;</span><span class="p">:</span> <span class="n">null</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">This argument can be an integer, a float, or None.</p>
 </div>
 <p><strong>Native type, iterable, unstructured</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;list&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">list</span></code></p>
 <p>This is a list native type. It has no required structure.</p>
@@ -138,17 +161,38 @@
 <span class="p">}</span>
 </pre></div>
 </div>
+<p><strong>Type type</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;TypeType&quot;</span></code></p>
+<p>This is used to ensure the value of an argument itself <em>is</em> a type. So, for instance, passing <code class="docutils literal notranslate"><span class="pre">int</span></code> would pass the <code class="docutils literal notranslate"><span class="pre">&lt;type</span> <span class="pre">'type'&gt;</span></code> check, but passing <code class="docutils literal notranslate"><span class="pre">1</span></code> would raise an <code class="docutils literal notranslate"><span class="pre">AssertionError</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;TypeType&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The value of the argument would have to be either <code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">float</span></code> to pass the check.</p>
 </div>
 <div class="section" id="value-ref">
 <h2>VALUE_REF<a class="headerlink" href="#value-ref" title="Permalink to this headline">¶</a></h2>
 <p>Value refs are <code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">list</span></code> or <code class="docutils literal notranslate"><span class="pre">dict</span></code> in type, and detail the permissable values for the argument to which they correspond.</p>
-<p><strong>Comparison</strong>:  <code class="docutils literal notranslate"><span class="pre">&quot;&gt;{}&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;&lt;{}&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;={}</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;={}</span></code></p>
+<p><strong>Comparison</strong>:  <code class="docutils literal notranslate"><span class="pre">&quot;&gt;{}&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;&lt;{}&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;&gt;={}&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;&lt;={}&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;!={}&quot;</span></code></p>
 <p>This value ref compares a number to the number replacing the <code class="docutils literal notranslate"><span class="pre">&quot;{}&quot;</span></code>. Obviously enough, only use these for TYPE_REF <code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">int</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
         <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
         <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;0&quot;</span>
 <span class="p">}</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Chaining comparison value refs is acceptable, and done as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;((&lt;10||&gt;10)&amp;&amp;!=5)||(&lt;=0&amp;&amp;!=-3)&quot;</span>
+</pre></div>
+</div>
+<p>The number must be:</p>
+<ul class="last simple">
+<li>less than 10 or greater than 10, but not equal to 5, <strong>or</strong></li>
+<li>less than or equal to 0, but not equal to -3</li>
+</ul>
 </div>
 <p><strong>Range</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;range({},</span> <span class="pre">{})&quot;</span></code></p>
 <p>This value ref ensures a numerical argument input falls between two numbers. <strong>Note</strong> that the range is inclusive, as in <code class="docutils literal notranslate"><span class="pre">{}&lt;=arg&lt;={}</span></code>.</p>
@@ -232,7 +276,7 @@
         <li class="right" >
           <a href="specs.html" title="Arg Specs"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.3 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">canonical_args 0.3.1 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

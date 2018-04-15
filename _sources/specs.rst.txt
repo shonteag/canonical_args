@@ -18,7 +18,8 @@ The basics of a Spec are as folows:
 	{
 		"kwarg-name": {
 			"type": ...,
-			"values": ...
+			"values": ...,
+			"required": ...
 		}
 	}
 
@@ -41,9 +42,9 @@ example: ::
 the requirements for each of the arguments:
 
 - ``arg1``
-	- an integer
+	- an integer or float
 - ``arg2``
-	- an integer
+	- an integer or float
 	- greater than 0 (to avoid ``ZeroDivisionError``'s)
 - ``arg3``
 	- a list
@@ -53,13 +54,19 @@ Now we model it in a ``dict``: ::
 	[
 		{
 			"name": "arg1",
-			"type": int,
-			"values": None
+			"type": "one([int, float])"
+			"values": {
+				"int": None,
+				"float": None
+			}
 		},
 		{
 			"name": "arg2",
-			"type": int,
-			"values": ">0"
+			"type": "one([int, float])",
+			"values": {
+				"int": ">0",
+				"float": ">0"
+			}
 		},
 		{
 			"name": "arg3",
@@ -68,9 +75,12 @@ Now we model it in a ``dict``: ::
 		}
 	]
 
-``arg1`` is defined as an ``int``, but has no value constraint, hence ``"values": None``.
+``arg1`` is defined as an ``int`` of ``float``, but has no value constraint, hence ``"values": None``.
 
-``arg2`` is defined as an ``int``, but *must* be greater than 0, hence ``"values": ">0"``.
+.. note :: Where we say ``"one([int, float])"``, we can also easily do ``one([int, float])`` (note it's not a string), as long as we import the ``canonical_args.check.one`` method first.
+
+
+``arg2`` is defined as an ``int`` or ``float``, but *must* be greater than 0, hence ``"values": {"int": ">0", "float": ">0"}``.  For choice of one type refs, the "values" key always contains an entry for each possible type.
 
 ``arg3`` is defined as a ``list``, but again, has no value constraints.
 
@@ -185,13 +195,14 @@ And the accompanying spec dict: ::
 
 Note that ``"values"`` and ``"type"`` now take the form of lists, with an entry for each required position in the argument.
 
-``dict``'s are slightly more complicated. Essentially, we nest the arg spec for a ``dict`` in the parent's ``"type"`` entry, and let recursion do the work.  Once again, let's use an example: ::
+``dict``'s are slightly more complicated. Essentially, we nest the arg spec for a ``dict`` in the parent's ``"values"`` entry, and let recursion do the work.  Once again, let's use an example: ::
 
 	{
 		"args": [
 			{
 				"name": "arg1",
-				"type": {
+				"type": dict,
+				"values": {
 					"dict-keyword": {
 						"type": int,
 						"values": None
@@ -200,8 +211,7 @@ Note that ``"values"`` and ``"type"`` now take the form of lists, with an entry 
 						"type": float,
 						"values": ">=0"
 					}
-				},
-				"values": None
+				}
 			}
 		]
 	}
