@@ -63,6 +63,7 @@ def eval_subtype(subtype):
     "one([])"       choice of one, can nest 'cls' calls here
     "cls('')"       a class import string
     "NoneType"      evaluates to ``type(None)``
+    "TypeType"      evaluates to ``<type 'type'>``
     ==========      =====================================================
     """
     if isinstance(subtype, str) or isinstance(subtype, unicode):
