@@ -37,6 +37,31 @@ This is a native type. This works for all non-nested native types. ::
 	}
 
 
+**NoneType**: ``"NoneType"``  
+
+This is a native type of ``None``, or ``type(None)``. ::
+
+	{
+		"type": "NoneType",
+		"values": null  # always null for NoneType
+	}
+
+.. note ::
+	
+	This may seem useless, as an argument that has to be None cannot pass any usable input, but this is not the case when nested. ::
+	
+		{
+			"type": "one([int, float, NoneType])",
+			"values": {
+				"int": VALUE_REF for int,
+				"float": VALUE_REF for float,
+				"NoneType": null
+			}
+		}
+
+	This argument can be an integer, a float, or None.
+
+
 **Native type, iterable, unstructured**: ``"list"`` or ``list``  
 
 This is a list native type. It has no required structure. ::
@@ -111,12 +136,24 @@ This is a Class type. It indicates that the argument will instance or subinstanc
 	}
 
 
+**Type type**: ``"TypeType"``  
+
+This is used to ensure the value of an argument itself *is* a type. So, for instance, passing ``int`` would pass the ``<type 'type'>`` check, but passing ``1`` would raise an ``AssertionError``. ::
+
+	{
+		"type": "TypeType",
+		"values": [int, float]
+	}
+
+The value of the argument would have to be either ``int`` or ``float`` to pass the check.
+
+
 VALUE\_REF
 ----------
 
 Value refs are ``str``, ``list`` or ``dict`` in type, and detail the permissable values for the argument to which they correspond.
 
-**Comparison**:  ``">{}"``, ``"<{}"``, ``>={}``, ``<={}``  
+**Comparison**:  ``">{}"``, ``"<{}"``, ``">={}"``, ``"<={}"``, ``"!={}"``
 
 This value ref compares a number to the number replacing the ``"{}"``. Obviously enough, only use these for TYPE\_REF ``float`` or ``int``. ::
 
@@ -124,6 +161,17 @@ This value ref compares a number to the number replacing the ``"{}"``. Obviously
 		"type": "int",
 		"values": ">0"
 	}
+
+.. note ::
+	
+	Chaining comparison value refs is acceptable, and done as follows: ::
+
+		"((<10||>10)&&!=5)||(<=0&&!=-3)"
+
+	The number must be:
+
+	- less than 10 or greater than 10, but not equal to 5, **or**
+	- less than or equal to 0, but not equal to -3
 
 
 **Range**: ``"range({}, {})"``  

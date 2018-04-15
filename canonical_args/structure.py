@@ -7,7 +7,7 @@ from __future__ import absolute_import
 import json
 
 from . import check
-
+from pprint import pprint
 
 
 def check_list(names, types, values, arg):
@@ -20,24 +20,32 @@ def check_list(names, types, values, arg):
     try:
         assert len(types) == len(arg)
     except AssertionError as e:
-        raise AssertionError("expected {} positional arguments, only"\
-                             " got {}".format(len(types), len(arg)))
+        raise AssertionError("expected {} positional arguments in '{}',"\
+                             " got {}".format(len(types), names, len(arg)))
 
     for subname, subtype, subvalues, subarg in zip(names, types, values, arg):
 
         subtype = check.eval_subtype(subtype)
-        
+
+        if isinstance(subtype, check.ChoiceOfOne):
+            arg_subtype = type(subarg)
+            if not check.type_to_string(arg_subtype) in subvalues:
+                raise AssertionError("arg '{}' is expected to be one of"\
+                                     " types {}, got {}".format(
+                    subname, subtype, arg_subtype))
+            subvalues = subvalues[check.type_to_string(arg_subtype)]
+            subtype = arg_subtype
+
         # recurse if list or tuple, but not if choice of one
-        if ((isinstance(subtype, list) or
-             isinstance(subtype, tuple)) and
-            not isinstance(subtype, check.ChoiceOfOne)):
+        if (isinstance(subtype, list) or
+            isinstance(subtype, tuple)):
             subname = ["{}#{}".format(subname, i) \
                        for i in range(0, len(subtype))]
             check_list(subname, subtype, subvalues, subarg)
             continue
 
-        elif isinstance(subtype, dict):
-            check_dict(subtype, subarg)
+        elif subtype == dict:
+            check_dict(subvalues, subarg)
             continue
 
         subarg = check.check_subtype(subname, subtype, subarg)
@@ -61,20 +69,29 @@ def check_dict(structure_dict, kwargs):
         struct = structure_dict[subname]
 
         subtype = check.eval_subtype(struct["type"])
+        subvalues = struct["values"]
 
-        if ((isinstance(subtype, list) or
-             isinstance(subtype, tuple)) and
-            not isinstance(subtype, check.ChoiceOfOne)):
+        if isinstance(subtype, check.ChoiceOfOne):
+            arg_subtype = type(subarg)
+            if not check.type_to_string(arg_subtype) in subvalues:
+                raise AssertionError("arg '{}' is expected to be one of"\
+                                     " types {}, got {}".format(
+                    subname, subtype, arg_subtype))
+            subvalues = subvalues[check.type_to_string(arg_subtype)]
+            subtype = arg_subtype
+
+        if (isinstance(subtype, list) or
+            isinstance(subtype, tuple)):
             subname = ["{}#{}".format(subname, i) for i in range(0, len(subtype))]
             check_list(subname, subtype, struct["values"], subarg)
             continue
 
-        elif isinstance(subtype, dict):
-            check_dict(subtype, subarg)
+        elif subtype == dict:
+            check_dict(subvalues, subarg)
             continue
 
         subarg = check.check_subtype(subname, subtype, subarg)
-        check.check_value(subname, subtype, struct["values"], subarg)
+        check.check_value(subname, subtype, subvalues, subarg)
 
 
 def check_args(struct, args, kwargs):

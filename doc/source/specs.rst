@@ -77,6 +77,9 @@ Now we model it in a ``dict``: ::
 
 ``arg1`` is defined as an ``int`` of ``float``, but has no value constraint, hence ``"values": None``.
 
+.. note :: Where we say ``"one([int, float])"``, we can also easily do ``one([int, float])`` (note it's not a string), as long as we import the ``canonical_args.check.one`` method first.
+
+
 ``arg2`` is defined as an ``int`` or ``float``, but *must* be greater than 0, hence ``"values": {"int": ">0", "float": ">0"}``.  For choice of one type refs, the "values" key always contains an entry for each possible type.
 
 ``arg3`` is defined as a ``list``, but again, has no value constraints.
@@ -192,13 +195,14 @@ And the accompanying spec dict: ::
 
 Note that ``"values"`` and ``"type"`` now take the form of lists, with an entry for each required position in the argument.
 
-``dict``'s are slightly more complicated. Essentially, we nest the arg spec for a ``dict`` in the parent's ``"type"`` entry, and let recursion do the work.  Once again, let's use an example: ::
+``dict``'s are slightly more complicated. Essentially, we nest the arg spec for a ``dict`` in the parent's ``"values"`` entry, and let recursion do the work.  Once again, let's use an example: ::
 
 	{
 		"args": [
 			{
 				"name": "arg1",
-				"type": {
+				"type": dict,
+				"values": {
 					"dict-keyword": {
 						"type": int,
 						"values": None
@@ -207,8 +211,7 @@ Note that ``"values"`` and ``"type"`` now take the form of lists, with an entry 
 						"type": float,
 						"values": ">=0"
 					}
-				},
-				"values": None
+				}
 			}
 		]
 	}

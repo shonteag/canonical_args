@@ -15,7 +15,7 @@ canonical_args is a package designed to provide some certainty around abstract m
 			},
 			{
 				"name": "argument2",
-				"type": "one([int, float, str])"
+				"type": "one([int, float, str])",
 				"values": {
 					"int": ">0",
 					"float": ">0",
@@ -26,7 +26,7 @@ canonical_args is a package designed to provide some certainty around abstract m
 		"kwargs": {
 			"loss_function": {
 				"type": str,
-				"value": ["quadratic", "0-1"]
+				"values": ["quadratic", "0-1"]
 			}
 		}
 	}

@@ -32,6 +32,13 @@ class TestCase_EvalSubtype(unittest.TestCase):
 			check.eval_subtype("one([int, cls('test_check.TestObj')])"),
 			check.ChoiceOfOne([int, TestObj]))
 
+	def test_type_none(self):
+		self.assertEqual(check.eval_subtype("NoneType"), type(None))
+
+	def test_complex_type_with_none(self):
+		self.assertEqual(check.eval_subtype("[int, str, NoneType]"),
+						 [int, str, type(None)])
+
 
 class TestCase_CheckSubtype(unittest.TestCase):
 
@@ -89,6 +96,11 @@ class TestCase_CheckSubtype(unittest.TestCase):
 			pass
 		else:
 			self.fail("should have thrown AssertionError")
+
+	def test_type_choice_of_one_with_none(self):
+		check.check_subtype("testArg",
+							check.ChoiceOfOne([int, float, type(None)]),
+							None)
 
 
 class TestCase_CheckValueWhitelist(unittest.TestCase):
@@ -207,6 +219,23 @@ class TestCase_CheckValueComparison(unittest.TestCase):
 		else:
 			self.fail("should have thrown AssertionError")
 
+	def test_value_comparison_formatted(self):
+		check.check_value_comparison(
+			"testArg",
+			"(>0||<0)&&!=10",
+			-10)
+
+	def test_value_comparison_formatted_fail(self):
+		try:
+			check.check_value_comparison(
+				"testArg",
+				"(>0||<0)&&!=10",
+				10)
+		except AssertionError:
+			pass
+		else:
+			self.fail("should have thrown AssertionError")
+
 
 class TestCase_CheckValue(unittest.TestCase):
 
@@ -245,6 +274,17 @@ class TestCase_CheckValue(unittest.TestCase):
 			"test_check.TestObj": None
 		}
 		subarg = TestObj()
+
+		check.check_value(subname, subtypes, subvalues, subarg)
+
+	def test_check_value_choice_of_one_with_none(self):
+		subname = "testArg"
+		subtypes = check.ChoiceOfOne([int, type(None)])
+		subvalues = {
+			"int": ">0",
+			"NoneType": None
+		}
+		subarg = None
 
 		check.check_value(subname, subtypes, subvalues, subarg)
 
