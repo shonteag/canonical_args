@@ -101,7 +101,7 @@ allowing retrieval of the arg spec associated with the message:</p>
 or dict against provided structure mandates and details.</p>
 <dl class="function">
 <dt id="canonical_args.structure.check_args">
-<code class="descclassname">canonical_args.structure.</code><code class="descname">check_args</code><span class="sig-paren">(</span><em>struct</em>, <em>args</em>, <em>kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.structure.check_args" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">canonical_args.structure.</code><code class="descname">check_args</code><span class="sig-paren">(</span><em>struct</em>, <em>args</em>, <em>kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.structure.check_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>check the arguments provided against the structure.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -123,13 +123,13 @@ or dict against provided structure mandates and details.</p>
 
 <dl class="function">
 <dt id="canonical_args.structure.check_dict">
-<code class="descclassname">canonical_args.structure.</code><code class="descname">check_dict</code><span class="sig-paren">(</span><em>structure_dict</em>, <em>kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.structure.check_dict" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">canonical_args.structure.</code><code class="descname">check_dict</code><span class="sig-paren">(</span><em>structure_dict</em>, <em>kwargs</em>, <em>eval_only=False</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.structure.check_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>usually used for checking kwargs</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="canonical_args.structure.check_list">
-<code class="descclassname">canonical_args.structure.</code><code class="descname">check_list</code><span class="sig-paren">(</span><em>names</em>, <em>types</em>, <em>values</em>, <em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.structure.check_list" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">canonical_args.structure.</code><code class="descname">check_list</code><span class="sig-paren">(</span><em>names</em>, <em>types</em>, <em>values</em>, <em>arg</em>, <em>eval_only=False</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.structure.check_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>recursively check a list of argument values (<code class="docutils literal notranslate"><span class="pre">arg</span></code>).
 usually used to check positional arguments passed to a
 function call.</p>
@@ -141,6 +141,12 @@ function call.</p>
 <dl class="class">
 <dt id="canonical_args.check.ChoiceOfOne">
 <em class="property">class </em><code class="descclassname">canonical_args.check.</code><code class="descname">ChoiceOfOne</code><a class="headerlink" href="#canonical_args.check.ChoiceOfOne" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="canonical_args.check.StructuredList">
+<em class="property">class </em><code class="descclassname">canonical_args.check.</code><code class="descname">StructuredList</code><a class="headerlink" href="#canonical_args.check.StructuredList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
 </dd></dl>
 
@@ -259,7 +265,25 @@ eg. <code class="docutils literal notranslate"><span class="pre">&quot;((&lt;10|
 <dl class="function">
 <dt id="canonical_args.check.dynamic_import">
 <code class="descclassname">canonical_args.check.</code><code class="descname">dynamic_import</code><span class="sig-paren">(</span><em>class_string</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.check.dynamic_import" title="Permalink to this definition">¶</a></dt>
-<dd><p>perform a dynamic import of a class or function (callable).</p>
+<dd><p>perform a python import, attempting first the new-style
+(aka <code class="docutils literal notranslate"><span class="pre">getattr(module,</span> <span class="pre">&quot;submodule&quot;)</span></code>), and falling back
+to old style (aka <code class="docutils literal notranslate"><span class="pre">exec</span> <span class="pre">&quot;from</span> <span class="pre">{}</span> <span class="pre">import</span> <span class="pre">{}&quot;.format(...)</span></code>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>class_string</strong> (<em>str</em>) – a python import string pointing to
+the class. eg. <code class="docutils literal notranslate"><span class="pre">package.module.submodule.AClass</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">types.ClassType</span></code>, the imported class.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">this method can also work for packages and modules,
+not only classes.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -277,8 +301,8 @@ eg. <code class="docutils literal notranslate"><span class="pre">&quot;((&lt;10|
 <p>Acceptable values:</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="16%" />
-<col width="84%" />
+<col width="23%" />
+<col width="77%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Format</th>
@@ -292,13 +316,16 @@ eg. <code class="docutils literal notranslate"><span class="pre">&quot;((&lt;10|
 <tr class="row-odd"><td>“one([])”</td>
 <td>choice of one, can nest ‘cls’ calls here</td>
 </tr>
-<tr class="row-even"><td>“cls(‘’)”</td>
+<tr class="row-even"><td>“structlist([])”</td>
+<td>a structured list <code class="docutils literal notranslate"><span class="pre">structlist([int,</span> <span class="pre">str,</span> <span class="pre">float])</span></code></td>
+</tr>
+<tr class="row-odd"><td>“cls(‘’)”</td>
 <td>a class import string</td>
 </tr>
-<tr class="row-odd"><td>“NoneType”</td>
+<tr class="row-even"><td>“NoneType”</td>
 <td>evaluates to <code class="docutils literal notranslate"><span class="pre">type(None)</span></code></td>
 </tr>
-<tr class="row-even"><td>“TypeType”</td>
+<tr class="row-odd"><td>“TypeType”</td>
 <td>evaluates to <code class="docutils literal notranslate"><span class="pre">&lt;type</span> <span class="pre">'type'&gt;</span></code></td>
 </tr>
 </tbody>
@@ -311,9 +338,21 @@ eg. <code class="docutils literal notranslate"><span class="pre">&quot;((&lt;10|
 <dd></dd></dl>
 
 <dl class="function">
+<dt id="canonical_args.check.structlist">
+<code class="descclassname">canonical_args.check.</code><code class="descname">structlist</code><span class="sig-paren">(</span><em>subtype</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.check.structlist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="canonical_args.check.type_to_string">
 <code class="descclassname">canonical_args.check.</code><code class="descname">type_to_string</code><span class="sig-paren">(</span><em>subtype</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.check.type_to_string" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>convert a subtype (aka, <code class="docutils literal notranslate"><span class="pre">types.*</span></code> to a string)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">type_to_string</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="go">&#39;int&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">type_to_string</span><span class="p">(</span><span class="n">package</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">SomeObject</span><span class="p">())</span>
+<span class="go">&#39;package.module.SomeObject&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
 
 </div>
 <div class="section" id="module-canonical_args">
@@ -321,7 +360,7 @@ eg. <code class="docutils literal notranslate"><span class="pre">&quot;((&lt;10|
 <p>Make top-level imports available.</p>
 <dl class="function">
 <dt id="canonical_args.check_args">
-<code class="descclassname">canonical_args.</code><code class="descname">check_args</code><span class="sig-paren">(</span><em>struct</em>, <em>args</em>, <em>kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.check_args" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">canonical_args.</code><code class="descname">check_args</code><span class="sig-paren">(</span><em>struct</em>, <em>args</em>, <em>kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#canonical_args.check_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>check the arguments provided against the structure.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

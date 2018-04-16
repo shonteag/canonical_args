@@ -108,7 +108,7 @@
 <p><strong>Native type, iterable, structured</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;list([int,</span> <span class="pre">str])&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">list([int,</span> <span class="pre">str])</span></code> or <code class="docutils literal notranslate"><span class="pre">[int,</span> <span class="pre">str]</span></code></p>
 <p>This is a list native type. It requires one integer, and one string, in that order.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list([int, str])&quot;</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;structlist([int, str])&quot;</span>
         <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span>
                 <span class="n">VALUE_REF</span> <span class="k">for</span> <span class="n">position</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">int</span>
                 <span class="n">VALUE_REF</span> <span class="k">for</span> <span class="n">position</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">str</span>
@@ -127,14 +127,15 @@
 <p><strong>Native type, keyed, structured</strong>: <code class="docutils literal notranslate"><span class="pre">{&quot;a&quot;:</span> <span class="pre">{&quot;type&quot;:</span> <span class="pre">int,</span> <span class="pre">&quot;values&quot;:</span> <span class="pre">None}</span></code></p>
 <p>This is a nested dict type. It indicates that the arg must be of type dict, and must contain the key <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code> corresponding to an integer value.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;subkey1&quot;</span><span class="p">:</span> <span class="p">{</span>
                         <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">TYPE_REF</span> <span class="k">for</span> <span class="n">key</span> <span class="n">subkey1</span><span class="p">,</span>
                         <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">VALUE_REF</span> <span class="k">for</span> <span class="n">key</span> <span class="n">subkey1</span><span class="p">,</span>
                         <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="n">true</span> <span class="p">(</span><span class="n">default</span><span class="p">)</span><span class="o">/</span><span class="n">false</span>
-                <span class="p">}</span>
+                <span class="p">},</span>
+                <span class="o">...</span>
         <span class="p">}</span>
-        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">null</span>
 <span class="p">}</span>
 </pre></div>
 </div>
