@@ -6,23 +6,7 @@ from __future__ import absolute_import
 import types
 
 
-class ChoiceOfOne(list):
-    def __repr__(self):
-        """
-        evaluate to simply ``"one"`` for value lookup
-        """
-        x = super(ChoiceOfOne, self).__repr__()
-        x = "one"
-        return x
 
-class StructuredList(list):
-    def __repr__(self):
-        """
-        evaluate to ``"structlist"`` for value lookup
-        """
-        x = super(StructuredList, self).__repr__()
-        x = "structlist"
-        return x
 
 def dynamic_import(class_string):
     """
@@ -65,6 +49,26 @@ def type_to_string(subtype):
     subtype = subtype.replace("<class '", "").replace("'>", "")
     return subtype
 
+"""
+special types used during eval
+"""
+class ChoiceOfOne(list):
+    def __repr__(self):
+        """
+        evaluate to simply ``"one"`` for value lookup
+        """
+        x = super(ChoiceOfOne, self).__repr__()
+        x = "one"
+        return x
+
+class StructuredList(list):
+    def __repr__(self):
+        """
+        evaluate to ``"structlist"`` for value lookup
+        """
+        x = super(StructuredList, self).__repr__()
+        x = "structlist"
+        return x
 
 # eval type "one"
 def one(subtype):
