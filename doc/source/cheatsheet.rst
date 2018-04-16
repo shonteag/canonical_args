@@ -72,7 +72,7 @@ This is a list native type. It has no required structure. ::
 	}
 
 
-**Native type, iterable, structured**: ``"list([int, str])"`` or ``list([int, str])`` or ``[int, str]``  
+**Native type, iterable, structured**: ``"structlist([int, str])"`` or ``structlist([int, str])``  
 
 This is a list native type. It requires one integer, and one string, in that order. ::
 
