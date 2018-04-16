@@ -8,22 +8,59 @@ import types
 
 class ChoiceOfOne(list):
     def __repr__(self):
+        """
+        evaluate to simply ``"one"`` for value lookup
+        """
         x = super(ChoiceOfOne, self).__repr__()
-        x = "one("+x+")"
+        x = "one"
+        return x
+
+class StructuredList(list):
+    def __repr__(self):
+        """
+        evaluate to ``"structlist"`` for value lookup
+        """
+        x = super(StructuredList, self).__repr__()
+        x = "structlist"
         return x
 
 def dynamic_import(class_string):
     """
-    perform a dynamic import of a class or function (callable).
+    perform a python import, attempting first the new-style
+    (aka ``getattr(module, "submodule")``), and falling back
+    to old style (aka ``exec "from {} import {}".format(...)``)
+
+    :param str class_string: a python import string pointing to
+        the class. eg. ``package.module.submodule.AClass``
+    :returns: ``types.ClassType``, the imported class.
+
+    .. note :: this method can also work for packages and modules,
+        not only classes.
     """
     package_name = class_string.split(".")[0]
+    module_import = ".".join(p for p in class_string.split(".")[:-1])
+    cla = class_string.split(".")[-1]
 
-    mod = __import__(package_name)
-    for comp in class_string.split(".")[1:]:
-        mod = getattr(mod, comp)
-    return mod
+    try:
+        mod = __import__(package_name)
+        for comp in class_string.split(".")[1:]:
+            mod = getattr(mod, comp)
+        return mod
+    except AttributeError, e:
+        # cannot import using new fashion, try old
+        exec "from {} import {}".format(module_import, cla)
+        return eval(class_string)
 
 def type_to_string(subtype):
+    """
+    convert a subtype (aka, ``types.*`` to a string)
+
+        >>> type_to_string(type(10))
+        'int'
+        >>> type_to_string(package.module.SomeObject())
+        'package.module.SomeObject'
+
+    """
     subtype = str(subtype).replace("<type '", "").replace("'>", "")
     subtype = subtype.replace("<class '", "").replace("'>", "")
     return subtype
@@ -33,6 +70,11 @@ def type_to_string(subtype):
 def one(subtype):
     assert isinstance(subtype, list)
     return ChoiceOfOne(eval_subtype(subtype))
+
+# the structured list subtype
+def structlist(subtype):
+    assert isinstance(subtype, list)
+    return StructuredList(eval_subtype(subtype))
 
 # eval type "cls"
 def cls(subtype):
@@ -56,15 +98,16 @@ def eval_subtype(subtype):
 
     Acceptable values:
 
-    ==========      =====================================================
-    Format          Use
-    ==========      =====================================================
-    "int"           native types: str, float, int, bool, dict, list, etc.
-    "one([])"       choice of one, can nest 'cls' calls here
-    "cls('')"       a class import string
-    "NoneType"      evaluates to ``type(None)``
-    "TypeType"      evaluates to ``<type 'type'>``
-    ==========      =====================================================
+    ================  =====================================================
+    Format            Use
+    ================  =====================================================
+    "int"             native types: str, float, int, bool, dict, list, etc.
+    "one([])"         choice of one, can nest 'cls' calls here
+    "structlist([])"  a structured list ``structlist([int, str, float])``
+    "cls('')"         a class import string
+    "NoneType"        evaluates to ``type(None)``
+    "TypeType"        evaluates to ``<type 'type'>``
+    ================  =====================================================
     """
     if isinstance(subtype, str) or isinstance(subtype, unicode):
 

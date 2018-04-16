@@ -92,7 +92,7 @@ Now we model it in a ``dict``: ::
 	
 		{
 			"name": "list_arg",
-			"type": "list([int, float, str])",
+			"type": "structlist([int, float, str])",
 			"values": [
 				"range(0, 15)",
 				">=50",
@@ -183,7 +183,7 @@ And the accompanying spec dict: ::
 		"args": [
 			{
 				"name": "arg1",
-				"type": [int, int, str],
+				"type": "structlist([int, int, str])",
 				"values": [
 					">=0",
 					"range(-10, 10)"

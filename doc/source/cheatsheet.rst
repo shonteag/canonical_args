@@ -77,7 +77,7 @@ This is a list native type. It has no required structure. ::
 This is a list native type. It requires one integer, and one string, in that order. ::
 
 	{
-		"type": "list([int, str])"
+		"type": "structlist([int, str])"
 		"values": [
 			VALUE_REF for position 0, int
 			VALUE_REF for position 1, str
@@ -100,14 +100,15 @@ This is a dict native type. It has no required structure or keys. ::
 This is a nested dict type. It indicates that the arg must be of type dict, and must contain the key ``"a"`` corresponding to an integer value. ::
 
 	{
-		"type": {
+		"type": dict
+		"values": {
 			"subkey1": {
 				"type": TYPE_REF for key subkey1,
 				"values": VALUE_REF for key subkey1,
 				"required": true (default)/false
-			}
+			},
+			...
 		}
-		"values": null
 	}
 
 

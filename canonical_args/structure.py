@@ -10,7 +10,9 @@ from . import check
 from pprint import pprint
 
 
-def check_list(names, types, values, arg):
+
+
+def check_list(names, types, values, arg, eval_only=False):
     """
     recursively check a list of argument values (``arg``).
     usually used to check positional arguments passed to a
@@ -41,18 +43,23 @@ def check_list(names, types, values, arg):
             isinstance(subtype, tuple)):
             subname = ["{}#{}".format(subname, i) \
                        for i in range(0, len(subtype))]
-            check_list(subname, subtype, subvalues, subarg)
+            check_list(subname,
+                       subtype,
+                       subvalues,
+                       subarg,
+                       eval_only=eval_only)
             continue
 
         elif subtype == dict:
-            check_dict(subvalues, subarg)
+            check_dict(subvalues, subarg, eval_only=eval_only)
             continue
 
-        subarg = check.check_subtype(subname, subtype, subarg)
-        check.check_value(subname, subtype, subvalues, subarg)
+        if not eval_only:
+            subarg = check.check_subtype(subname, subtype, subarg)
+            check.check_value(subname, subtype, subvalues, subarg)
 
 
-def check_dict(structure_dict, kwargs):
+def check_dict(structure_dict, kwargs, eval_only=False):
     """
     usually used for checking kwargs
     """
@@ -83,18 +90,23 @@ def check_dict(structure_dict, kwargs):
         if (isinstance(subtype, list) or
             isinstance(subtype, tuple)):
             subname = ["{}#{}".format(subname, i) for i in range(0, len(subtype))]
-            check_list(subname, subtype, struct["values"], subarg)
+            check_list(subname,
+                       subtype,
+                       struct["values"],
+                       subarg,
+                       eval_only=eval_only)
             continue
 
         elif subtype == dict:
-            check_dict(subvalues, subarg)
+            check_dict(subvalues, subarg, eval_only=eval_only)
             continue
 
-        subarg = check.check_subtype(subname, subtype, subarg)
-        check.check_value(subname, subtype, subvalues, subarg)
+        if not eval_only:
+            subarg = check.check_subtype(subname, subtype, subarg)
+            check.check_value(subname, subtype, subvalues, subarg)
 
 
-def check_args(struct, args, kwargs):
+def check_args(struct, args, kwargs=None):
     """
     check the arguments provided against the structure.
 
@@ -111,4 +123,3 @@ def check_args(struct, args, kwargs):
     check_list(names, types, values, args)
     if kwargs:  # kwargs are optional!
         check_dict(struct["kwargs"], kwargs)
-

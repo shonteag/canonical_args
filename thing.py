@@ -1,4 +1,6 @@
+# we can import the type refs...
 from canonical_args.check import one, cls, NoneType, TypeType
+
 from canonical_args import structure
 
 class TestObj(object):
@@ -8,7 +10,7 @@ argspec = {
 	"args": [
 		{
 			"name": "arg1",
-			"type": "one([int, float, str])",
+			"type": "one([int, float, str])",  # ... or keep them as strings
 			"values": {
 				"int": ">0&&!=5",
 				"float": "<5.3||>7.8",
@@ -20,7 +22,7 @@ argspec = {
 			"type": dict,
 			"values": {
 				"subkey1": {
-					"type": cls('__main__.TestObj'),
+					"type": "cls('thing.TestObj')",
 					"values": None,
 					"required": True
 				},
