@@ -58,7 +58,7 @@ class ChoiceOfOne(list):
         evaluate to simply ``"one"`` for value lookup
         """
         x = super(ChoiceOfOne, self).__repr__()
-        x = "one"
+        x = "<type 'one'>"
         return x
 
 class StructuredList(list):
@@ -67,7 +67,7 @@ class StructuredList(list):
         evaluate to ``"structlist"`` for value lookup
         """
         x = super(StructuredList, self).__repr__()
-        x = "structlist"
+        x = "<type 'structlist'>"
         return x
 
 # eval type "one"

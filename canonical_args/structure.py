@@ -18,6 +18,10 @@ def check_list(names, types, values, arg, eval_only=False):
     usually used to check positional arguments passed to a
     function call.
     """
+    if values is None:
+        # this is an unstructured list!
+        return
+
     # length
     try:
         assert len(types) == len(arg)
@@ -63,6 +67,10 @@ def check_dict(structure_dict, kwargs, eval_only=False):
     """
     usually used for checking kwargs
     """
+    if structure_dict is None:
+        # this is an unstructured dict!
+        return
+
     required = [key for key, spec in structure_dict.items()\
                     if "required" not in spec or spec["required"]]
 
