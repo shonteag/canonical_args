@@ -55,7 +55,7 @@ or by decorating a method, if we do control it (let's say for a dynamically impo
 
 This could potentially be of great use to dynamically generate frontend code with type and value-checking code.  The specs themselves could be stored in a file or database, allowing for fully dynamic method calls: ::
 
-	from canonical_args import check_args
+	from canonical_args import checkspec
 	import pymongo
 
 	conn = pymongo.MongoClient("localhost", 27017)

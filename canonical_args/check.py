@@ -61,7 +61,13 @@ class ChoiceOfOne(list):
         x = "<type 'one'>"
         return x
 
+class StructuredListType(type):
+    def __instancecheck__(self, instance):
+        return type(instance) in [self, list]
+
 class StructuredList(list):
+    __metaclass__ = StructuredListType
+
     def __repr__(self):
         """
         evaluate to ``"structlist"`` for value lookup

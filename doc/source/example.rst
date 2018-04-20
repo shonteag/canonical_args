@@ -22,7 +22,7 @@ Some basic assumptions, each submodule name ``"handler_*.py"`` will contain a me
 	import os
 	import glob
 	import imp
-	from canonical_args import check_args
+	from canonical_args import checkspec
 	here = os.path.dirname(os.path.abspath(__name__))
 
 	handlers = {}
@@ -39,7 +39,7 @@ Some basic assumptions, each submodule name ``"handler_*.py"`` will contain a me
 		handler_module = handlers[message_type]
 
 		# check the arguments
-		check_args(handler_module.argspec, *args, **kwargs)
+		checkspec(handler_module.argspec, *args, **kwargs)
 
 		return handler_module.handle(*args, **kwargs)
 
@@ -77,7 +77,7 @@ Some basic assumptions, each submodule name ``"handler_*.py"`` will contain a me
 
 We now have a argument-checked interface to add new handlers for message types whenever we like. ``handler_message2.py`` is not shown, as it simply follows the form of ``handler_message1.py``.
 
-.. note :: There is another method of checking arguments without calling ``check_args`` in ``handler.handle`` method.  We can decorate each of the sub-handlers (eg. ``handler_message1.handle``) with the ``arg_spec`` decorator as follows: ::
+.. note :: There is another method of checking arguments without calling ``checkspec`` in ``handler.handle`` method.  We can decorate each of the sub-handlers (eg. ``handler_message1.handle``) with the ``arg_spec`` decorator as follows: ::
 	
 		@arg_spec(
 			{

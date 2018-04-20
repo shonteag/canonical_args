@@ -7,127 +7,118 @@ from __future__ import absolute_import
 import json
 
 from . import check
-from pprint import pprint
 
 
 
+def checkspec(spec, args=[], kwargs={}):
 
-def check_list(names, types, values, arg, eval_only=False):
-    """
-    recursively check a list of argument values (``arg``).
-    usually used to check positional arguments passed to a
-    function call.
-    """
-    if values is None:
-        # this is an unstructured list!
-        return
+    def recurse(level, name, types, values, arg):
 
-    # length
-    try:
-        assert len(types) == len(arg)
-    except AssertionError as e:
-        raise AssertionError("expected {} positional arguments in '{}',"\
-                             " got {}".format(len(types), names, len(arg)))
-
-    for subname, subtype, subvalues, subarg in zip(names, types, values, arg):
-
-        subtype = check.eval_subtype(subtype)
+        subtype = check.eval_subtype(types)
 
         if isinstance(subtype, check.ChoiceOfOne):
-            arg_subtype = type(subarg)
-            if not check.type_to_string(arg_subtype) in subvalues:
-                raise AssertionError("arg '{}' is expected to be one of"\
-                                     " types {}, got {}".format(
-                    subname, subtype, arg_subtype))
-            subvalues = subvalues[check.type_to_string(arg_subtype)]
-            subtype = arg_subtype
+            # argtype = type(arg)
+            # subvalue = values[check.type_to_string(argtype)]
 
-        # recurse if list or tuple, but not if choice of one
-        if (isinstance(subtype, list) or
-            isinstance(subtype, tuple)):
-            subname = ["{}#{}".format(subname, i) \
-                       for i in range(0, len(subtype))]
-            check_list(subname,
-                       subtype,
-                       subvalues,
-                       subarg,
-                       eval_only=eval_only)
-            continue
+            index = None
+            for i, st in enumerate(subtype):
+                if isinstance(st, (list, dict)):
+                    st = type(st)
+                if isinstance(arg, st):
+                    index = i
+                    break
 
-        elif subtype == dict:
-            check_dict(subvalues, subarg, eval_only=eval_only)
-            continue
+            argtype = subtype[index]
+            subvalue = values[check.type_to_string(type(arg))]
 
-        if not eval_only:
-            subarg = check.check_subtype(subname, subtype, subarg)
-            check.check_value(subname, subtype, subvalues, subarg)
+            recurse(level+1,
+                    name,
+                    argtype,
+                    subvalue,
+                    arg)
 
+        # structlist
+        elif isinstance(subtype, list) and isinstance(values, list):
+            arg = check.check_subtype(name, type(subtype), arg)
 
-def check_dict(structure_dict, kwargs, eval_only=False):
-    """
-    usually used for checking kwargs
-    """
-    if structure_dict is None:
-        # this is an unstructured dict!
-        return
+            # check for matching length
+            if not len(arg) == len(subtype):
+                raise AssertionError(
+                    "arg `{}` expected of length {}. got arg"\
+                    " of length {}".format(name, len(arg), len(subtype)))
 
-    required = [key for key, spec in structure_dict.items()\
-                    if "required" not in spec or spec["required"]]
+            for index, val in enumerate(arg):
+                recurse(level+1,
+                        name+"#"+str(index),
+                        subtype[index],
+                        values[index],
+                        val)
 
-    # keys may not be missing
-    missing = set(required) - set(kwargs.keys())
-    assert len(missing) == 0
+        # structdict
+        elif subtype == dict and isinstance(values, dict):
+            arg = check.check_subtype(name, subtype, arg)
 
-    for subname, subarg in kwargs.items():
-        # make sure the keyword argument is registered
-        assert subname in structure_dict
-        struct = structure_dict[subname]
+            # check for required keys
+            required = [key for key in values.keys()\
+                        if "required" not in values[key] or\
+                        values[key]["required"]]
 
-        subtype = check.eval_subtype(struct["type"])
-        subvalues = struct["values"]
+            missing = set(required) - set(arg.keys())
+            if len(missing) > 0:
+                raise AssertionError(
+                    "arg `{}` missing required keys {}".format(
+                        name, missing))
 
-        if isinstance(subtype, check.ChoiceOfOne):
-            arg_subtype = type(subarg)
-            if not check.type_to_string(arg_subtype) in subvalues:
-                raise AssertionError("arg '{}' is expected to be one of"\
-                                     " types {}, got {}".format(
-                    subname, subtype, arg_subtype))
-            subvalues = subvalues[check.type_to_string(arg_subtype)]
-            subtype = arg_subtype
+            for key, val in arg.items():
+                recurse(level+1,
+                        name+"."+key,
+                        values[key]["type"],
+                        values[key]["values"],
+                        val)
 
-        if (isinstance(subtype, list) or
-            isinstance(subtype, tuple)):
-            subname = ["{}#{}".format(subname, i) for i in range(0, len(subtype))]
-            check_list(subname,
-                       subtype,
-                       struct["values"],
-                       subarg,
-                       eval_only=eval_only)
-            continue
+        # unstruct list
+        elif subtype == list and values is None:
+            arg = check.check_subtype(name, subtype, arg)
 
-        elif subtype == dict:
-            check_dict(subvalues, subarg, eval_only=eval_only)
-            continue
+        # unstruct dict
+        elif subtype == dict and values is None:
+            arg = check.check_subtype(name, subtype, arg)
 
-        if not eval_only:
-            subarg = check.check_subtype(subname, subtype, subarg)
-            check.check_value(subname, subtype, subvalues, subarg)
+        # selector
+        elif isinstance(values, list):
+            arg = check.check_subtype(name, subtype, arg)
+            check.check_value(name, subtype, values, arg)
+
+        # native
+        else:
+            arg = check.check_subtype(name, subtype, arg)
+            check.check_value(name, subtype, values, arg)
 
 
-def check_args(struct, args, kwargs=None):
-    """
-    check the arguments provided against the structure.
+    # check for matching length
+    if not len(args) == len(spec["args"]):
+        raise TypeError(
+            "expected {} positional arguments, got {}".format(
+                len(spec["args"]), len(args)))
 
-    :param dict struct: the dict detailing the argument structure
-    :param list args: the args to check against struct
-    :param dict kwargs: the kwargs to check against the struct
-    :raises AssertionError: when args or kwargs do not match struct
-    """
-    names = [sub["name"] for sub in struct["args"]]
-    types = [sub["type"] for sub in struct["args"]]
-    values = [sub["values"] for sub in struct["args"]]
-    # args = args
+    for index, subspec in enumerate(spec["args"]):
+        arg = args[index]
+        recurse(0,
+                subspec["name"],
+                subspec["type"],
+                subspec["values"],
+                arg)
 
-    check_list(names, types, values, args)
-    if kwargs:  # kwargs are optional!
-        check_dict(struct["kwargs"], kwargs)
+
+    for kw, kwarg in kwargs.items():
+        if not kw in spec["kwargs"]:
+            raise TypeError(
+                "keyword arguments contain unknown key {}".format(
+                    kw))
+
+        subspec = spec["kwargs"][kw]
+        recurse(0,
+                kw,
+                subspec["type"],
+                subspec["values"],
+                kwarg)

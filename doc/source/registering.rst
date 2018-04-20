@@ -51,7 +51,7 @@ Registering without decorators
 ------------------------------
 Although decorators are quite useful, what if we do not control the source code containing the method to be decorated?  Quite simply, we can use the ``canonical_args`` module to ensure a method remembers its spec: ::
 
-	from canonical_args import function, check_args
+	from canonical_args import function, checkspec
 	# this is a third-party method we don't control
 	from thirdparty_module import amethod
 

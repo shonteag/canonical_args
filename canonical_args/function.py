@@ -33,7 +33,7 @@ def arg_spec(spec, register=True):
         def _inner(*args, **kwargs):
             if register:
                 spec = getattr(func, FUNC_SPEC_VAR)
-            structure.check_args(spec, args, kwargs)
+            structure.checkspec(spec, args, kwargs)
             return func(*args, **kwargs)
         return _inner
     return inner
