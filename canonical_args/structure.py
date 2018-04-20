@@ -59,8 +59,8 @@ def checkspec(spec, args=[], kwargs={}):
             arg = check.check_subtype(name, subtype, arg)
 
             # check for required keys
-            required = [key for key in values.keys()\
-                        if "required" not in values[key] or\
+            required = [key for key in values.keys() \
+                        if "required" not in values[key] or \
                         values[key]["required"]]
 
             missing = set(required) - set(arg.keys())

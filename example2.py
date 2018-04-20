@@ -2,6 +2,9 @@ from canonical_args.structure import checkspec
 
 
 
+class TestObj(object):
+	pass
+
 argspec = {
 	"args": [
 	],
@@ -23,6 +26,10 @@ argspec = {
 								"!=50"
 							]
 						}
+					},
+					"subkey2": {
+						"type": "cls('__main__.TestObj')",
+						"values": None
 					}
 				}
 			}
@@ -30,4 +37,4 @@ argspec = {
 	}
 }
 
-checkspec(argspec, [], {"kwarg1": {"subkey1": [10, 49]}})
+checkspec(argspec, [], {"kwarg1": {"subkey1": [10, 49], "subkey2": TestObj()}})
