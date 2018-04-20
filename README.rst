@@ -89,7 +89,7 @@ https://shonteag.github.io/canonical_args/
 
 Future Work
 -----------
-I aim to provide frontend code generation directly within the module, probably in a subpackage.  At least to handle HTML ``<form>`` generation, possibly with Javascript type matching.
+I aim to provide frontend code generation directly within the module, probably in a subpackage.  At least to handle HTML ``<form>`` generation, possibly with Javascript type matching. **Currently under development!** (https://github.com/shonteag/canonical_args_frontend/)
 
 
 Installation
