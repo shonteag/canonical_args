@@ -72,12 +72,12 @@ This is a list native type. It has no required structure. ::
 	}
 
 
-**Native type, iterable, structured**: ``"structlist([int, str])"`` or ``structlist([int, str])``  
+**Native type, iterable, structured**: ``"list([int, str])"`` or ``list([int, str])``  
 
 This is a list native type. It requires one integer, and one string, in that order. ::
 
 	{
-		"type": "structlist([int, str])"
+		"type": "list([int, str])"
 		"values": [
 			VALUE_REF for position 0, int
 			VALUE_REF for position 1, str

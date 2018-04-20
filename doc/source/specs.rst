@@ -3,7 +3,7 @@ Arg Specs
 
 For ``canonical_args`` "specs" are ``dict``-formatted metadata
 governing method arguments.  They provide the configurable
-functionality of the module's ``check_args`` method, and associated
+functionality of the module's ``checkspec`` method, and associated
 method decorators.
 
 The basics of a Spec are as folows:
@@ -92,7 +92,7 @@ Now we model it in a ``dict``: ::
 	
 		{
 			"name": "list_arg",
-			"type": "structlist([int, float, str])",
+			"type": "list([int, float, str])",
 			"values": [
 				"range(0, 15)",
 				">=50",
@@ -183,7 +183,7 @@ And the accompanying spec dict: ::
 		"args": [
 			{
 				"name": "arg1",
-				"type": "structlist([int, int, str])",
+				"type": "list([int, int, str])",
 				"values": [
 					">=0",
 					"range(-10, 10)"
