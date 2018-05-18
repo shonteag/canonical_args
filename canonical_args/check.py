@@ -140,8 +140,8 @@ def check_subtype(subname, subtype, subarg, should_cast=False):
     """
     check the type of ``subarg`` against the potential subtypes.
 
-    :params str subname: the name of the arg (for error formatting)
-    :params subtype: the type to check against
+    :param str subname: the name of the arg (for error formatting)
+    :param subtype: the type to check against
     :type subtype: ``<type 'type'>`` or ``canonical_args.check.ChoiceOfOne``
     :param subarg: the argument whose type is being checked
     :param bool should_cast: default False, when True, will attempt to

@@ -19,8 +19,8 @@ def arg_spec(spec, register=True):
     """
     Decorates a method, and checks args against spec.
 
-    :params dict spec: the arg spec dict
-    :params bool register: default ``True``, registers the spec
+    :param dict spec: the arg spec dict
+    :param bool register: default ``True``, registers the spec
         directly to the function variable scope. once registered,
         the spec can be retrieved with ``func.get_spec()``.
     """
@@ -42,8 +42,8 @@ def im_arg_spec(spec, register=True):
     """
     Decorates an instance method, and checks args against spec.
 
-    :params dict spec: the arg spec dict
-    :params bool register: default ``True``, registers the spec
+    :param dict spec: the arg spec dict
+    :param bool register: default ``True``, registers the spec
         directly to the function variable scope. once registered,
         the spec can be retrieved with ``func.get_spec()``.
     """
