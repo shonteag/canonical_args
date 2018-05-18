@@ -38,6 +38,29 @@ def arg_spec(spec, register=True):
         return _inner
     return inner
 
+def im_arg_spec(spec, register=True):
+    """
+    Decorates an instance method, and checks args against spec.
+
+    :params dict spec: the arg spec dict
+    :params bool register: default ``True``, registers the spec
+        directly to the function variable scope. once registered,
+        the spec can be retrieved with ``func.get_spec()``.
+    """
+    def inner(func):
+        # register the spec to the function,
+        if register and not hasattr(func, FUNC_SPEC_VAR):
+            register_spec(func, spec)
+
+        @functools.wraps(func)
+        def _inner(self, *args, **kwargs):
+            if register:
+                spec = getattr(func, FUNC_SPEC_VAR)
+            structure.checkspec(spec, args, kwargs)
+            return func(self, *args, **kwargs)
+        return _inner
+    return inner
+
 def register_spec(func, spec):
     """
     add the argspec var to the function scope

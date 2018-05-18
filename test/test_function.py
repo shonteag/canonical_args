@@ -36,3 +36,26 @@ class TestCase_TestArgSpecDecorator(unittest.TestCase):
 			pass
 		else:
 			self.fail("should have thrown AssertionError")
+
+
+class TestObject(object):
+
+	@function.im_arg_spec(spec)
+	def func1(*args, **kwargs):
+		return args, kwargs
+
+class TestCase_TestInstanceMethodArgSpec(unittest.TestCase):
+
+	def setUp(self):
+		self.obj = TestObject()
+
+	def test_fire_instance_method(self):
+		self.obj.func1(1, 3.1, kwarg1=1)
+
+	def test_fire_decoreated_method_fail(self):
+		try:
+			self.obj.func1(1, 3.1, kwarg1="string")
+		except AssertionError:
+			pass
+		else:
+			self.fail("should have thrown AssertionError")
